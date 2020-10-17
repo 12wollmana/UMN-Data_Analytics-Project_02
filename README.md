@@ -1,5 +1,6 @@
 # Use of Police Force in Minneapolis
 <em>Aaron Wollman, Kelsey Richardson Blackwell, Will Huang, Mark Erickson</em>
+
 {Project Description}
 
 
