@@ -351,3 +351,4 @@ MigrationBackup/
 
 # User-Added
 static/js/config.js
+*.icloud
