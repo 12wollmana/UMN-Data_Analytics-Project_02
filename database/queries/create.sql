@@ -1,4 +1,4 @@
-﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
 -- Link to schema: https://app.quickdatabasediagrams.com/#/d/QU9F4l
 -- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
 
@@ -23,7 +23,7 @@ CREATE TABLE "subject" (
 
 CREATE TABLE "case" (
     "case_id" INT   NOT NULL,
-    "case_number" VARCHAR(25)   NOT NULL,
+    "case_number" VARCHAR(50)   NOT NULL,
     "is_911_call" BOOLEAN,
     "problem" VARCHAR(50)   NOT NULL,
     "primary_offense" VARCHAR(15)   NOT NULL,

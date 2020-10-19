@@ -18,7 +18,7 @@ resistance VARCHAR(25)
 case
 -
 case_id INT PK
-case_number VARCHAR(25)
+case_number VARCHAR(50)
 is_911_call BOOLEAN
 problem VARCHAR(50)
 primary_offense VARCHAR(15)
