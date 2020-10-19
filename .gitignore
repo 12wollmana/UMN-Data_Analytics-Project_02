@@ -351,3 +351,5 @@ MigrationBackup/
 
 # User-Added
 static/js/config.js
+*.icloud
+*.DS_Store
