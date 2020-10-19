@@ -8,17 +8,17 @@ subject
 -
 subject_id INT PK
 race VARCHAR(20)
-sex VARCHAR(10)
+sex VARCHAR(25)
 age INT
 has_injury BOOLEAN
-role VARCHAR(15)
+role VARCHAR(25)
 role_number INT
 resistance VARCHAR(25)
 
 case
 -
 case_id INT PK
-case_number VARCHAR(10)
+case_number VARCHAR(25)
 is_911_call BOOLEAN
 problem VARCHAR(50)
 primary_offense VARCHAR(15)
@@ -29,6 +29,10 @@ city_id INT FK >- city.city_id
 precinct_id INT FK >- precinct.precinct_id
 neighborhood_id INT FK >-  neighborhood.neighborhood_id
 police_force_id INT FK - police_force.police_force_id
+year INT
+month INT
+day INT 
+hour INT
 
 city
 -
@@ -79,3 +83,4 @@ force_category_id INT FK >- force_categories.force_category_id
 force_action VARCHAR(50)
 force_report_number INT
 subject_id INT FK - subject.subject_id
+
