@@ -1,5 +1,5 @@
 
-// Creating map object
+// Creating Leaflet map object with maker clusters
 var myMap = L.map("mapid", {
     center: [44.9778, -93.2650],
     zoom: 13
@@ -225,3 +225,4 @@ function loop() {
 loop();
 
 }); // end am4core.ready()
+

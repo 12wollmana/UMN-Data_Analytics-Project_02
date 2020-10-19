@@ -1,0 +1,81 @@
+# POLICE FORCE DATABASE
+# Aaron Wollman, Will Huang, 
+# Kelsey Richardson Blackwell, Mark Erickson
+#------------------------------------
+# Paste this code into app.quickdatabasediagrams.com
+
+subject
+-
+subject_id INT PK
+race VARCHAR(20)
+sex VARCHAR(10)
+age INT
+has_injury BOOLEAN
+role VARCHAR(15)
+role_number INT
+resistance VARCHAR(25)
+
+case
+-
+case_id INT PK
+case_number VARCHAR(10)
+is_911_call BOOLEAN
+problem VARCHAR(50)
+primary_offense VARCHAR(15)
+date VARCHAR(15)
+latitude FLOAT
+longitude FLOAT
+city_id INT FK >- city.city_id
+precinct_id INT FK >- precinct.precinct_id
+neighborhood_id INT FK >-  neighborhood.neighborhood_id
+police_force_id INT FK - police_force.police_force_id
+
+city
+-
+city_id INT PK
+city_name VARCHAR(50)
+
+city_summary
+-
+city_summary_id INT PK
+city_id INT FK >- city.city_id
+year INT
+total_calls INT
+
+precinct
+-
+precinct_id INT PK
+precint_name VARCHAR(50)
+
+precinct_summary
+-
+precinct_summary_id INT PK
+precinct_id INT FK >- precinct.precinct_id
+year INT
+total_calls INT
+
+neighborhood
+-
+neighborhood_id INT PK
+neighborhood_name VARCHAR(50)
+
+neighborhood_summary
+-
+neighborhood_summary_id INT PK
+neighborhood_id INT FK >- neighborhood.neighborhood_id
+year INT
+total_calls INT
+
+force_categories
+-
+force_category_id INT PK
+category VARCHAR(50)
+
+police_force
+-
+police_force_id INT PK
+force_number INT
+force_category_id INT FK >- force_categories.force_category_id
+force_action VARCHAR(50)
+force_report_number INT
+subject_id INT FK - subject.subject_id
