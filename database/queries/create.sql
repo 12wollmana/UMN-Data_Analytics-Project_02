@@ -9,13 +9,13 @@
 
 CREATE TABLE "subject" (
     "subject_id" INT   NOT NULL,
-    "race" VARCHAR(20)   NOT NULL,
-    "sex" VARCHAR(10)   NOT NULL,
+    "race" VARCHAR(20),
+    "sex" VARCHAR(25)   NOT NULL,
     "age" INT   NOT NULL,
     "has_injury" BOOLEAN,
-    "role" VARCHAR(15)   NOT NULL,
+    "role" VARCHAR(25)   NOT NULL,
     "role_number" INT   NOT NULL,
-    "resistance" VARCHAR(25)   NOT NULL,
+    "resistance" VARCHAR(25),
     CONSTRAINT "pk_subject" PRIMARY KEY (
         "subject_id"
      )
@@ -23,7 +23,7 @@ CREATE TABLE "subject" (
 
 CREATE TABLE "case" (
     "case_id" INT   NOT NULL,
-    "case_number" VARCHAR(10)   NOT NULL,
+    "case_number" VARCHAR(25)   NOT NULL,
     "is_911_call" BOOLEAN,
     "problem" VARCHAR(50)   NOT NULL,
     "primary_offense" VARCHAR(15)   NOT NULL,
@@ -34,6 +34,10 @@ CREATE TABLE "case" (
     "precinct_id" INT   NOT NULL,
     "neighborhood_id" INT   NOT NULL,
     "police_force_id" INT   NOT NULL,
+    "year" INT   NOT NULL,
+    "month" INT   NOT NULL,
+    "day" INT   NOT NULL,
+    "hour" INT   NOT NULL,
     CONSTRAINT "pk_case" PRIMARY KEY (
         "case_id"
      )
