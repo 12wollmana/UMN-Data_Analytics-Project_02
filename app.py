@@ -195,7 +195,11 @@ def api_docs_year(version):
     selected_version_info = get_version_info(version)
     available_years = {}
     if(selected_version_info):
-        available_years = load_available_years()
+        session = Session(engine)
+        try:
+            available_years = load_available_years(session)
+        finally:
+            session.close()
     else:
         abort(404, "API version is not available.")
 
@@ -207,7 +211,11 @@ def api_year(version, year):
 
     year_data = {}
     if selected_version_info:
-        year_data = load_year_data(year)
+        session = Session(engine)
+        try:
+            year_data = load_year_data(session, year)
+        finally:
+            session.close()
     else:
         abort(404, "API version is not available.")
 
@@ -219,11 +227,32 @@ def api_docs_city(version):
 
     available_cities = {}
     if selected_version_info:
-        available_cities = load_available_cities()
+        session = Session(engine)
+        try:
+            available_cities = load_available_cities(session)
+        finally:
+            session.close()
     else:
         abort(404, "API version is not available.")
 
     return jsonify(available_cities);
+
+
+@app.route(routes["api_docs_precinct"])
+def api_docs_precinct(version):
+    selected_version_info = get_version_info(version)
+
+    available_precincts = {}
+    if selected_version_info:
+        session = Session(engine)
+        try:
+            available_precincts = load_available_precincts(session)
+        finally:
+            session.close()
+    else:
+        abort(404, "API version is not available.")
+
+    return jsonify(available_precincts);
 
 
 ########################################
@@ -237,10 +266,9 @@ def get_version_info(api_version):
             selected_version_info = version_info
     return selected_version_info;
 
-def load_available_cities():
+def load_available_cities(session):
     city_table = database_tables.city
 
-    session = Session(engine)
     available_city_results = session.query(
         city_table.city_id,
         city_table.city_name
@@ -252,16 +280,37 @@ def load_available_cities():
             {
                 "cityID": result.city_id,
                 "name": result.city_name
-            })
+            }
+        )
 
     return {
         "availableCities" : city_ids
     }
 
-def load_available_years():
+def load_available_precincts(session):
+    precinct_table = database_tables.precinct
+
+    available_precinct_results = session.query(
+        precinct_table.precinct_id,
+        precinct_table.precinct_name
+    ).all()
+
+    precinct_ids = []
+    for result in available_precinct_results:
+        precinct_ids.append(
+            {
+                "precinctID": result.precinct_id,
+                "name": result.precinct_name
+            }
+        )
+
+    return {
+        "availablePrecincts" : precinct_ids
+    }
+
+def load_available_years(session):
     case_table = database_tables.case
 
-    session = Session(engine)
     available_year_results = session.query(
         case_table.year
     ).distinct()
@@ -270,7 +319,7 @@ def load_available_years():
     for result in available_year_results:
         years.append(result.year)
     years.sort()
-    session.close()
+
     return {"availableYears" : years}
 
 def load_cases_by_year(session, year):
@@ -437,10 +486,8 @@ def load_subject_by_id(session, subject_id):
         "resistance" : subject_result.resistance
     }
 
-def load_year_data(year):
+def load_year_data(session, year):
     all_year_data = [];
-
-    session = Session(engine)
 
     cases_by_year_results = load_cases_by_year(session, year)
     
@@ -514,8 +561,7 @@ def load_year_data(year):
         }
 
         all_year_data.append({"case" : case_data})
-
-    session.close();
+    
     return all_year_data;
 
 
