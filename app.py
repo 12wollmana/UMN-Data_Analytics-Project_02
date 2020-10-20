@@ -32,8 +32,12 @@ api_current_version = "v1.0"
 
 routes = {
     "home": "/",
-    "api_docs": "/api/<version>",
     "api_versions": "/api",
+    "api_docs": "/api/<version>",
+    "api_docs_year" : "/api/<version>/year",
+    "api_docs_city" : "/api/<version>/city",
+    "api_docs_precinct" : "/api/<version>/precinct",
+    "api_docs_neighborhood" : "/api/<version>/neighborhood",
     "api_year" : "/api/<version>/year/<year>",
     "api_city" : "/api/<version>/city/<cityID>",
     "api_precinct" : "/api/<version>/precinct/<precinctID>",
@@ -182,6 +186,17 @@ def api_docs(version):
     return jsonify(documentation)
 
 
+@app.route(routes["api_docs_year"])
+def api_docs_year(version):
+    selected_version_info = get_version_info(version)
+    available_years = {}
+    if(selected_version_info):
+        available_years = load_available_years()
+    else:
+        abort(404, "API version is not available.")
+
+    return jsonify(available_years)
+
 @app.route(routes["api_year"])
 def api_year(version, year):
     selected_version_info = get_version_info(version)
@@ -198,12 +213,28 @@ def api_year(version, year):
 ########################################
 # HELPER FUNCTIONS
 ########################################
+
 def get_version_info(api_version):
     selected_version_info = {}
     for version_info in version_infos:
         if(version_info["name"] == api_version):
             selected_version_info = version_info
     return selected_version_info;
+
+def load_available_years():
+    case_table = database_tables.case
+
+    session = Session(engine)
+    available_year_results = session.query(
+        case_table.year
+    ).distinct()
+
+    years = []
+    for result in available_year_results:
+        years.append(result.year)
+    years.sort()
+    session.close()
+    return {"available_years" : years}
 
 def load_cases_by_year(session, year):
     case_table = database_tables.case
