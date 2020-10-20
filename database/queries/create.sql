@@ -63,7 +63,7 @@ CREATE TABLE "city_summary" (
 
 CREATE TABLE "precinct" (
     "precinct_id" INT   NOT NULL,
-    "precint_name" VARCHAR(50)   NOT NULL,
+    "precinct_name" VARCHAR(50)   NOT NULL,
     CONSTRAINT "pk_precinct" PRIMARY KEY (
         "precinct_id"
      )
