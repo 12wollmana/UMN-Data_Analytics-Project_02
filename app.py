@@ -254,6 +254,22 @@ def api_docs_precinct(version):
 
     return jsonify(available_precincts);
 
+@app.route(routes["api_docs_neighborhood"])
+def api_docs_neighborhood(version):
+    selected_version_info = get_version_info(version)
+
+    available_neighborhoods = {}
+    if selected_version_info:
+        session = Session(engine)
+        try:
+            available_neighborhoods = load_available_neighborhoods(session)
+        finally:
+            session.close()
+    else:
+        abort(404, "API version is not available.")
+
+    return jsonify(available_neighborhoods);
+
 
 ########################################
 # HELPER FUNCTIONS
@@ -306,6 +322,27 @@ def load_available_precincts(session):
 
     return {
         "availablePrecincts" : precinct_ids
+    }
+
+def load_available_neighborhoods(session):
+    neighborhood_table = database_tables.neighborhood
+
+    available_neighborhood_results = session.query(
+        neighborhood_table.neighborhood_id,
+        neighborhood_table.neighborhood_name
+    ).all()
+
+    neighborhood_ids = []
+    for result in available_neighborhood_results:
+        neighborhood_ids.append(
+            {
+                "neighborhoodID": result.neighborhood_id,
+                "name": result.neighborhood_name
+            }
+        )
+
+    return {
+        "availableNeighborhoods" : neighborhood_ids
     }
 
 def load_available_years(session):
