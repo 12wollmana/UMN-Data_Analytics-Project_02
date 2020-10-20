@@ -141,7 +141,7 @@ def home():
 
     Returns
     -------
-    Flask Rendered Template
+    Flask Rendered Template :
         The HTML to show.
     """
 
@@ -155,7 +155,7 @@ def api_versions():
 
     Returns
     -------
-    Flask Rendered Template
+    Flask Rendered Template :
         The HTML to show.
     """
     return render_template(
@@ -176,7 +176,7 @@ def api_docs(version):
 
     Returns
     -------
-    Flask Rendered Template
+    Flask Rendered Template :
         The HTML to show.
     """
     selected_version_info = get_version_info(version)
@@ -192,6 +192,19 @@ def api_docs(version):
 
 @app.route(routes["api_docs_year"])
 def api_docs_year(version):
+    """
+    API endpoint for retrieving all available years.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    Returns
+    -------
+    Flask JSON :
+        A list of all available years.
+    """
     selected_version_info = get_version_info(version)
     available_years = {}
     if(selected_version_info):
@@ -207,6 +220,22 @@ def api_docs_year(version):
 
 @app.route(routes["api_year"])
 def api_year(version, year):
+    """
+    API endpoint for retrieving all cases within a specified year.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    year : int
+        The year to retrieve
+
+    Returns
+    -------
+    Flask JSON :
+        All cases within the year.
+    """
     selected_version_info = get_version_info(version)
 
     year_data = {}
@@ -223,6 +252,19 @@ def api_year(version, year):
 
 @app.route(routes["api_docs_city"])
 def api_docs_city(version):
+    """
+    API endpoint for retriving all available cities.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    Returns
+    -------
+    Flask JSON :
+        All available cities.
+    """
     selected_version_info = get_version_info(version)
 
     available_cities = {}
@@ -240,6 +282,19 @@ def api_docs_city(version):
 
 @app.route(routes["api_docs_precinct"])
 def api_docs_precinct(version):
+    """
+    API endpoint for retrieving all precincts.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    Returns
+    -------
+    Flask JSON :
+        All available precincts.
+    """
     selected_version_info = get_version_info(version)
 
     available_precincts = {}
@@ -256,6 +311,19 @@ def api_docs_precinct(version):
 
 @app.route(routes["api_docs_neighborhood"])
 def api_docs_neighborhood(version):
+    """
+    API endpoint for retrieving all neighborhoods.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    Returns
+    -------
+    Flask JSON :
+        All available neighborhoods.
+    """
     selected_version_info = get_version_info(version)
 
     available_neighborhoods = {}
@@ -276,6 +344,19 @@ def api_docs_neighborhood(version):
 ########################################
 
 def get_version_info(api_version):
+    """
+    Retrives information for an API version.
+
+    Parameters
+    ----------
+    api_version : string
+        The API version to look up.
+
+    Returns
+    -------
+    Dict
+        Information about the API and its endpoints.
+    """
     selected_version_info = {}
     for version_info in version_infos:
         if(version_info["name"] == api_version):
@@ -283,6 +364,19 @@ def get_version_info(api_version):
     return selected_version_info;
 
 def load_available_cities(session):
+    """
+    Gets all cities out of the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    Returns
+    -------
+    Dict
+        List of available cities.
+    """
     city_table = database_tables.city
 
     available_city_results = session.query(
@@ -304,6 +398,19 @@ def load_available_cities(session):
     }
 
 def load_available_precincts(session):
+    """
+    Gets all precincts out of the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    Returns
+    -------
+    Dict
+        List of available precincts.
+    """
     precinct_table = database_tables.precinct
 
     available_precinct_results = session.query(
@@ -325,6 +432,19 @@ def load_available_precincts(session):
     }
 
 def load_available_neighborhoods(session):
+    """
+    Gets all neighborhoods out of the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    Returns
+    -------
+    Dict
+        List of available neighborhoods.
+    """
     neighborhood_table = database_tables.neighborhood
 
     available_neighborhood_results = session.query(
@@ -346,6 +466,19 @@ def load_available_neighborhoods(session):
     }
 
 def load_available_years(session):
+    """
+    Gets all years out of the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    Returns
+    -------
+    Dict
+        List of available years.
+    """
     case_table = database_tables.case
 
     available_year_results = session.query(
@@ -360,6 +493,22 @@ def load_available_years(session):
     return {"availableYears" : years}
 
 def load_cases_by_year(session, year):
+    """
+    Loads all cases by year out of a database.
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    year : Int
+        The year to get.
+
+    Returns
+    -------
+    Dict
+        Cases in the year.
+    """
     case_table = database_tables.case
 
     cases_by_year_results = session.query(
@@ -383,6 +532,22 @@ def load_cases_by_year(session, year):
     return cases_by_year_results
 
 def load_city_by_id(session, city_id):
+    """
+    Gets information on a city by its ID
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    city_id : int
+        The city id
+
+    Returns
+    -------
+    Dict
+        The city's info.
+    """
     city_table = database_tables.city
 
     results = session.query(
@@ -399,6 +564,22 @@ def load_city_by_id(session, city_id):
     }
 
 def load_precinct_by_id(session, precinct_id):
+    """
+    Gets information on a precinct by its ID
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    precinct_id : int
+        The precinct id
+
+    Returns
+    -------
+    Dict
+        The precinct's info.
+    """
     precinct_table = database_tables.precinct
 
     results =  session.query(
@@ -415,6 +596,22 @@ def load_precinct_by_id(session, precinct_id):
     }
 
 def load_neighborhood_by_id(session, neighborhood_id):
+    """
+    Gets information on a neighborhood by its ID
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    neighborhood_id : int
+        The neighborhood id
+
+    Returns
+    -------
+    Dict
+        The neighborhood's info.
+    """
     neighborhood_table = database_tables.neighborhood
 
     results = session.query(
@@ -431,6 +628,22 @@ def load_neighborhood_by_id(session, neighborhood_id):
     }
 
 def load_police_force_by_id(session, force_id):
+    """
+    Loads information on a police force from its ID.
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    force_id : int
+        Police force ID
+
+    Returns
+    -------
+    Dict
+        Information on the police force.
+    """
     force_table = database_tables.police_force
 
     results = session.query(
@@ -480,6 +693,22 @@ def load_police_force_by_id(session, force_id):
     }
 
 def load_force_category_by_id(session, force_category_id):
+    """
+    Loads information on a force category from its ID.
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    force_category_id : int
+        Force category ID
+
+    Returns
+    -------
+    Dict
+        Information on the force category.
+    """
     force_category_table = database_tables.force_categories
 
     results = session.query(
@@ -497,6 +726,22 @@ def load_force_category_by_id(session, force_category_id):
     }
 
 def load_subject_by_id(session, subject_id):
+    """
+    Loads information on a case subject from its ID.
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    subject_id : int
+        Subject ID
+
+    Returns
+    -------
+    Dict
+        Information on the subject.
+    """
     subject_table = database_tables.subject
 
     results = session.query(
@@ -524,6 +769,23 @@ def load_subject_by_id(session, subject_id):
     }
 
 def load_year_data(session, year):
+    """
+    Loads all cases by year with all related information,
+    out of the database.
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    year : Int
+        The year to get.
+
+    Returns
+    -------
+    Dict
+        All case information.
+    """
     all_year_data = [];
 
     cases_by_year_results = load_cases_by_year(session, year)
