@@ -104,26 +104,32 @@ version_infos = [
                 "/api/v1.0/city/": "Gets a list of available cities.",
                 "/api/v1.0/city/<cityID>": {
                     "name": "The name of the city.",
-                    "summary": {
-                        "year": "The year.",
-                        "totalCalls": "The total number of calls in the year."
-                    }
+                    "summary": [
+                        {
+                            "year": "The year.",
+                            "totalCalls": "The total number of calls in the year."
+                        }
+                    ]
                 },
                 "/api/v1.0/precinct/": "Gets a list of available precincts.",
                 "/api/v1.0/precinct/<precinctID>": {
                     "name": "The name of the precinct.",
-                    "summary": {
-                        "year": "The year.",
-                        "totalCalls": "The total number of calls in the year."
-                    }
+                    "summary": [
+                        {
+                            "year": "The year.",
+                            "totalCalls": "The total number of calls in the year."
+                        }
+                    ]
                 },
                 "/api/v1.0/neighborhood/": "Gets a list of available neighborhoods.",
                 "/api/v1.0/neighborhood/<neighborhoodID>": {
                     "name": "The name of the neighborhood.",
-                    "summary": {
-                        "year": "The year.",
-                        "totalCalls": "The total number of calls in the year."
-                    }
+                    "summary": [
+                        {
+                            "year": "The year.",
+                            "totalCalls": "The total number of calls in the year."
+                        }
+                    ]
                 }
             }
     }
@@ -338,6 +344,105 @@ def api_docs_neighborhood(version):
 
     return jsonify(available_neighborhoods);
 
+@app.route(routes["api_city"])
+def api_city(version, cityID):
+    """
+    API endpoint for getting city information.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    cityID: int
+        The city ID
+
+    Returns
+    -------
+    Flask JSON :
+        City summary.
+    """
+    selected_version_info = get_version_info(version)
+
+    city_summary = {}
+    if selected_version_info:
+        session = Session(engine)
+        try:
+            city_summary = load_city_summary(session, cityID)
+        finally:
+            session.close()
+    else:
+        abort(404, "API version is not available.")
+
+    return jsonify(city_summary);
+
+
+@app.route(routes["api_precinct"])
+def api_precinct(version, precinctID):
+    """
+    API endpoint for getting precinct information.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    precinctID: int
+        The precinct ID
+
+    Returns
+    -------
+    Flask JSON :
+        Precinct summary.
+    """
+    selected_version_info = get_version_info(version)
+
+    precinct_summary = {}
+    if selected_version_info:
+        session = Session(engine)
+        try:
+            precinct_summary = load_precinct_summary(session, precinctID)
+        finally:
+            session.close()
+    else:
+        abort(404, "API version is not available.")
+
+    return jsonify(precinct_summary);
+
+@app.route(routes["api_neighborhood"])
+def api_neighborhood(version, neighborhoodID):
+    """
+    API endpoint for getting neighborhood information.
+
+    Parameters
+    ----------
+    version : string
+        API version
+
+    neighborhoodID: int
+        The neighborhood ID
+
+    Returns
+    -------
+    Flask JSON :
+        Neighborhood summary.
+    """
+    selected_version_info = get_version_info(version)
+
+    neighborhood_summary = {}
+    if selected_version_info:
+        session = Session(engine)
+        try:
+            neighborhood_summary = load_neighborhood_summary(
+                session, 
+                neighborhoodID
+            )
+        finally:
+            session.close()
+    else:
+        abort(404, "API version is not available.")
+
+    return jsonify(neighborhood_summary);
 
 ########################################
 # HELPER FUNCTIONS
@@ -863,6 +968,238 @@ def load_year_data(session, year):
     
     return all_year_data;
 
+def load_city_summary(session, city_id):
+    """
+    Loads a city summary and related information from the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    city_id : int
+        The city ID
+
+    Returns
+    -------
+    Dict
+        The city summary information
+    """
+    city_data = {}
+    try:
+        city_data = load_city_by_id(
+            session,
+            city_id
+        )
+    except IndexError:
+            abort(404, 
+            f"Unable to load city with id {city_id}.")
+   
+    summary_data = {}
+    try: 
+        summary_data = load_city_summary_by_id(
+            session,
+            city_id
+        )
+    except IndexError:
+            abort(404, 
+            f"Unable to load city summary with id {city_id}.")
+    return {
+        "name" : city_data["name"],
+        "summary": summary_data
+    }
+
+def load_city_summary_by_id(session, city_id):
+    """
+    Loads the city summary from the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    city_id : int
+        The city ID
+
+    Returns
+    -------
+    Dict
+        The city summary
+    """
+    city_summary_table = database_tables.city_summary
+
+    results = session.query(
+        city_summary_table.year,
+        city_summary_table.total_calls
+    ).filter(
+        city_summary_table.city_id == city_id
+    )
+    
+    return format_summary_results(results)
+
+def load_precinct_summary(session, precinct_id):
+    """
+    Loads a precinct summary and related information from the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    precinct_id : int
+        The precinct ID
+
+    Returns
+    -------
+    Dict
+        The precinct summary information
+    """
+    precinct_data = {}
+    try:
+        precinct_data = load_precinct_by_id(
+            session,
+            precinct_id
+        )
+    except IndexError:
+            abort(404, 
+            f"Unable to load precinct with id {precinct_id}.")
+   
+    summary_data = {}
+    try: 
+        summary_data = load_precinct_summary_by_id(
+            session,
+            precinct_id
+        )
+    except IndexError:
+            abort(404, 
+            f"Unable to load precinct summary with id {precinct_id}.")
+    return {
+        "name" : precinct_data["name"],
+        "summary": summary_data
+    }
+
+def load_precinct_summary_by_id(session, precinct_id):
+    """
+    Loads the precinct summary from the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    precinct_id : int
+        The precinct ID
+
+    Returns
+    -------
+    Dict
+        The precinct summary
+    """
+    precinct_summary_table = database_tables.precinct_summary
+
+    results = session.query(
+        precinct_summary_table.year,
+        precinct_summary_table.total_calls
+    ).filter(
+        precinct_summary_table.precinct_id == precinct_id
+    )
+    
+    return format_summary_results(results)
+
+
+def load_neighborhood_summary(session, neighborhood_id):
+    """
+    Loads a neighborhood summary and related information from the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    neighborhood_id : int
+        The neighborhood ID
+
+    Returns
+    -------
+    Dict
+        The neighborhood summary information
+    """
+    neighborhood_data = {}
+    try:
+        neighborhood_data = load_neighborhood_by_id(
+            session,
+            neighborhood_id
+        )
+    except IndexError:
+            abort(404, 
+            f"Unable to load neighborhood with id {neighborhood_id}.")
+   
+    summary_data = {}
+    try: 
+        summary_data = load_neighborhood_summary_by_id(
+            session,
+            neighborhood_id
+        )
+    except IndexError:
+            abort(404, 
+            f"Unable to load neighborhood summary with id {neighborhood_id}.")
+    return {
+        "name" : neighborhood_data["name"],
+        "summary": summary_data
+    }
+
+def load_neighborhood_summary_by_id(session, neighborhood_id):
+    """
+    Loads the neighborhood summary from the database
+
+    Parameters
+    ----------
+    session : SQLAlchemy Session
+        Database session
+
+    neighborhood_id : int
+        The neighborhood ID
+
+    Returns
+    -------
+    Dict
+        The neighborhood summary
+    """
+    neighborhood_summary_table = database_tables.neighborhood_summary
+
+    results = session.query(
+        neighborhood_summary_table.year,
+        neighborhood_summary_table.total_calls
+    ).filter(
+        neighborhood_summary_table.neighborhood_id == neighborhood_id
+    )
+    
+    return format_summary_results(results)
+
+def format_summary_results(summary_results):
+    """
+    Formats summary results for display in JSON format.
+
+    Parameters
+    ----------
+    summary_results : SQLAlchemy Results
+        Results from SQLAlchemy regarding summary tables.
+
+    Returns
+    -------
+    Dict
+        Formatted summary results.
+    """
+    summary = []
+    for summary_result in summary_results:
+        summary.append(
+            {
+                "year" : summary_result.year,
+                "totalCalls" : summary_result.total_calls
+            }
+        )
+    
+    return summary
 
 ########################################
 # RUN FLASK
