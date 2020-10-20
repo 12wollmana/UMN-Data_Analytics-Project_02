@@ -49,7 +49,7 @@ total_calls INT
 precinct
 -
 precinct_id INT PK
-precint_name VARCHAR(50)
+precinct_name VARCHAR(50)
 
 precinct_summary
 -
