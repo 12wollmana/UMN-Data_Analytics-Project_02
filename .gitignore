@@ -494,4 +494,4 @@ static/js/config.js
 *.icloud
 *.DS_Store
 config.py
-
+*/config.py
