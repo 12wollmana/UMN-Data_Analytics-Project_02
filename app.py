@@ -56,6 +56,7 @@ version_infos = [
         "url": "/api/v1.0",
         "documentation":
             {
+                "/api/v1.0/year/" : "Gets a list of available years.",
                 "/api/v1.0/year/<year>": [
                     {
                         "case": {
@@ -100,6 +101,7 @@ version_infos = [
                         }
                     }
                 ],
+                "/api/v1.0/city/": "Gets a list of available cities.",
                 "/api/v1.0/city/<cityID>": {
                     "name": "The name of the city.",
                     "summary": {
@@ -107,6 +109,7 @@ version_infos = [
                         "totalCalls": "The total number of calls in the year."
                     }
                 },
+                "/api/v1.0/precinct/": "Gets a list of available precincts.",
                 "/api/v1.0/precinct/<precinctID>": {
                     "name": "The name of the precinct.",
                     "summary": {
@@ -114,6 +117,7 @@ version_infos = [
                         "totalCalls": "The total number of calls in the year."
                     }
                 },
+                "/api/v1.0/neighborhood/": "Gets a list of available neighborhoods.",
                 "/api/v1.0/neighborhood/<neighborhoodID>": {
                     "name": "The name of the neighborhood.",
                     "summary": {
@@ -209,6 +213,18 @@ def api_year(version, year):
 
     return jsonify(year_data);
 
+@app.route(routes["api_docs_city"])
+def api_docs_city(version):
+    selected_version_info = get_version_info(version)
+
+    available_cities = {}
+    if selected_version_info:
+        available_cities = load_available_cities()
+    else:
+        abort(404, "API version is not available.")
+
+    return jsonify(available_cities);
+
 
 ########################################
 # HELPER FUNCTIONS
@@ -220,6 +236,27 @@ def get_version_info(api_version):
         if(version_info["name"] == api_version):
             selected_version_info = version_info
     return selected_version_info;
+
+def load_available_cities():
+    city_table = database_tables.city
+
+    session = Session(engine)
+    available_city_results = session.query(
+        city_table.city_id,
+        city_table.city_name
+    ).all()
+
+    city_ids = []
+    for result in available_city_results:
+        city_ids.append(
+            {
+                "cityID": result.city_id,
+                "name": result.city_name
+            })
+
+    return {
+        "availableCities" : city_ids
+    }
 
 def load_available_years():
     case_table = database_tables.case
@@ -234,7 +271,7 @@ def load_available_years():
         years.append(result.year)
     years.sort()
     session.close()
-    return {"available_years" : years}
+    return {"availableYears" : years}
 
 def load_cases_by_year(session, year):
     case_table = database_tables.case
