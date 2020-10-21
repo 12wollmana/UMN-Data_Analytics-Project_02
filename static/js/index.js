@@ -9,6 +9,8 @@ const elements =  {
 }
 
 async function main(){
+  showLoading();
+
   const map = makeMap();
 
   const streetLayer = makeStreetTileLayer();

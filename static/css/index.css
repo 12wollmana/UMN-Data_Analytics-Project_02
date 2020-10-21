@@ -9,7 +9,7 @@ html {
 }
 
 #mapid {
-  height: 100vh;
+  height: 25rem;
 }
 
 h1 {
@@ -23,7 +23,6 @@ h1 {
 
 .loading {
   position: fixed;
-  /* backdrop-filter: blur(50px); */
   background-color: rgba(0, 0, 0, 0.8);
   color: white;
   z-index: 1000000;
@@ -34,6 +33,14 @@ h1 {
   left: 0;
   transition: all .5s;
 }
+
+/* @supports (backdrop-filter: blur(50px)){
+  .loading {
+    backdrop-filter: blur(50px);
+    background-color: rgba(0, 0, 0, 0.3);
+    color: rgba(0,0,0);
+  }
+} */
 
 .loading--active{
   visibility: visible;
@@ -62,4 +69,12 @@ h1 {
 .loading .spinner {
   width: 10rem;
   height: 10rem;
+}
+
+.navbar-brand svg {
+  margin-bottom: .25rem;
+}
+
+main {
+  margin-top: 5rem;
 }
