@@ -1,45 +1,84 @@
+const serverBaseURL = "http://127.0.0.1:5000"
+const apiBaseURL = `${serverBaseURL}/api`
+const apiCurrentVersion = "v1.0"
+const defaultYear = 2020;
 
-// Creating Leaflet map object with maker clusters
-var myMap = L.map("mapid", {
+async function main(){
+  const map = makeMap();
+
+  const streetLayer = makeStreetTileLayer();
+  streetLayer.addTo(map);
+
+  const allCasesByYear = await loadCasesByYear(defaultYear);
+  console.log(allCasesByYear);
+
+  const caseMarkers = createCaseClustersMarkers(allCasesByYear);
+  caseMarkers.addTo(map);
+}
+
+main();
+
+function makeMap(){
+  // Creating Leaflet map object with maker clusters
+  var myMap = L.map("mapid", {
     center: [44.9778, -93.2650],
     zoom: 13
   });
-  
+
+  return myMap;
+}
+
+function makeStreetTileLayer(){
   // Adding tile layer
-  L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-    tileSize: 512,
-    maxZoom: 18,
-    zoomOffset: -1,
-    id: "mapbox/streets-v11",
-    accessToken: API_KEY
-  }).addTo(myMap);
+  const streetsLayer = L.tileLayer(
+    "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", 
+    {
+      attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+      tileSize: 512,
+      maxZoom: 18,
+      zoomOffset: -1,
+      id: "mapbox/streets-v11",
+      accessToken: API_KEY
+   }
+  );
 
-// Assemble API query URL
-var url = "http://127.0.0.1:5500/api/v1.0"
+  return streetsLayer;
+}
 
-// Grab the data with d3
-d3.json(url).then(function(response) {
-
-  // Create a new marker cluster group
+function createCaseClustersMarkers(cases){
   var markers = L.markerClusterGroup();
 
-  // Loop through data
-  for (var i = 0; i < response.length; i++) {
+  cases.forEach(caseInfo => {
+    const currentCase = caseInfo.case;
 
-    // Check for location property
-    if (response[i].latitude, reponse[i].longitude) {
+    const longitude = currentCase.longitude;
+    const latitude = currentCase.latitude;
+    const date = currentCase.date;
+    const problem = currentCase.problem;
 
-      // Add a new marker to the cluster group and bind a pop-up - NEED TO ADJUST POPUP
-      markers.addLayer(L.marker([response[i].latitude, reponse[i].longitude])
-        .bindPopup(response[i].date + response[i].problem + response[i].resistance + response[i].forceAction));
+    if(longitude && latitude){
+      const marker = L.marker([latitude, longitude]);
+      marker.bindPopup(
+        `
+        <h3>
+        ${problem}
+        </h3>
+        <hr>
+        ${date}
+        `
+      );
+      markers.addLayer(marker);
     }
+  });
 
-  }
+  return markers;
+}
 
-  // Add our marker cluster layer to the map
-  myMap.addLayer(markers);
-});
+async function loadCasesByYear(year){
+  const url = `${apiBaseURL}/${apiCurrentVersion}/year/${year}`;
+  const allCases = await d3.json(url);
+  return allCases;
+}
 
 // PIE CHARTS
 
