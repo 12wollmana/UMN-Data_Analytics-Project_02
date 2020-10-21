@@ -50,70 +50,113 @@
   <main>  
     <div class="container">
       <div class="row">
-        <div class="col-md-6 col-sm-12">
+        <!-- Title Card -->
+        <div class="col-12">
           <div class="jumbotron">
             <h1 class="display-4">
               Police Use of Force
               <span class="city text-muted">Minneapolis</span>
             </h1>
             <hr class="my-4">
-            <form>
-              <div class="form-group">
-                <label for="selectYear">Year</label>
-                <select class="form-control" id="selectYear">
-                  <option>2020</option>
-                  <option>2</option>
-                  <option>3</option>
-                  <option>4</option>
-                  <option>5</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-primary">Apply</button>
-            </form>
-            <hr class="my-4">
-            <div id="mapid"></div>
+            
+            
           </div>
         </div>
-        <div class="col-md-6">
+        <!-- City Map -->
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              City Map
+            </div>
+            <div id="mapid"></div>
+          </div>
+          <br>
+        </div>
+      </div>
+      <div class="row">
+        <!-- Race Pie Chart -->
+        <div class="col-md-6 col-sm-12">
           <div class="card">
             <div class="card-header">
               Use of Force by Race
             </div>
             <div class="card-body">
-              <div id="chartdiv"></div>
+              <div class="chart chart--race">
+                <!-- Generate pie chart here -->
+              </div>
             </div>
           </div>
+          <br>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-6">
-          <!-- The div that holds our map -->
-          
-        </div>
-        <div class="col-md-6">
-          <!-- The div that holds our barchart -->
-          <div id="barchart">
-            <p>This is where the barchart goes.</p>
+        <!-- Pie Chart #2 -->
+        <div class="col-md-6 col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              Pie Chart #2
+            </div>
+            <div class="card-body">
+              <div class="chart">
+                <!-- Generated pie chart here -->
+              </div>
+            </div>
           </div>
+          <br>
         </div>
-      </div>
-      <div class="row">
-        <div class="col-md-4">
-          <!-- The first pie graph -->
-          <div id="chartdiv"></div>
-            <p>Race Pie Chart</p>
+        <!-- Pie Chart #3 -->
+        <div class="col-md-6 col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              Pie Chart #3
+            </div>
+            <div class="card-body">
+              <div class="chart">
+                <!-- Generated pie chart here -->
+              </div>
+            </div>
+          </div>
+          <br>
         </div>
-        <div class="col-md-4">
-          <!-- The second pie graph -->
-          <p>Pie chart #2</p>
-        </div>
-        <div class="col-md-4">
-          <!-- The third pie graph -->
-          <p>Pie chart #2</p>
+        <!-- Bar Chart -->
+        <div class="col-md-6 col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              Bar Chart
+            </div>
+            <div class="card-body">
+              <div class="chart chart--bar">
+                <!-- Generated bar chart here -->
+              </div>
+            </div>
+          </div>
+          <br>
         </div>
       </div>
     </div>
   </main>
+
+  <footer>
+    <nav class="navbar fixed-bottom navbar-dark bg-primary">
+      <span class="navbar-brand">Settings</span>
+      <form class="form-inline">
+        <div class="form-row">
+          <div class="col">
+              <label class="d-inline text-light" for="selectYear">Year: </label>
+              <select class="form-control" id="selectYear">
+                <option>2020</option>
+              </select>
+            </div>
+          </div>
+          <div class="col">
+            <button class="btn btn-outline-light" type="submit">
+              Apply
+            </button>
+          </div>
+        </div>
+          
+        
+      </form>
+    </nav>
+  </footer>
 
   <div class="loading loading--inactive">
     <div class="loading__content">
