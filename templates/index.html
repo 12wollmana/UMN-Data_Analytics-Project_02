@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Minneapolis Police Use of Force</title>
+  <title>Police Use of Force | Minneapolis</title>
 
   <!-- Leaflet CSS -->
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
@@ -22,23 +22,22 @@
   <!-- Our CSS -->
   <link rel="stylesheet" type="text/css" href="../static/css/index.css">
   
-  
 </head>
 
 <body>
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">
+  <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+    <a class="navbar-brand mr-auto" href="/">
       <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-shield-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
         <path fill-rule="evenodd" d="M5.187 1.025C6.23.749 7.337.5 8 .5c.662 0 1.77.249 2.813.525a61.09 61.09 0 0 1 2.772.815c.528.168.926.623 1.003 1.184.573 4.197-.756 7.307-2.367 9.365a11.191 11.191 0 0 1-2.418 2.3 6.942 6.942 0 0 1-1.007.586c-.27.124-.558.225-.796.225s-.526-.101-.796-.225a6.908 6.908 0 0 1-1.007-.586 11.192 11.192 0 0 1-2.417-2.3C2.167 10.331.839 7.221 1.412 3.024A1.454 1.454 0 0 1 2.415 1.84a61.11 61.11 0 0 1 2.772-.815z"/>
       </svg>
-      Minneapolis Police Use of Force
+      Police Use of Force
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
+      <ul class="navbar-nav ml-auto">
         <li class="nav-item active">
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
@@ -48,25 +47,48 @@
       </ul>
     </div>
   </nav>
-  <main>
-    <div class="loading loading--inactive">
-      <div class="loading__content">
-        <div class="spinner spinner-grow" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-        <div class="loading__text">Loading</div>
-      </div>
-    </div>  
+  <main>  
     <div class="container">
       <div class="row">
-        <div class="col-md-12">
-          <h1>Minneapolis Police Use of Force</h1>
+        <div class="col-md-6 col-sm-12">
+          <div class="jumbotron">
+            <h1 class="display-4">
+              Police Use of Force
+              <span class="city text-muted">Minneapolis</span>
+            </h1>
+            <hr class="my-4">
+            <form>
+              <div class="form-group">
+                <label for="selectYear">Year</label>
+                <select class="form-control" id="selectYear">
+                  <option>2020</option>
+                  <option>2</option>
+                  <option>3</option>
+                  <option>4</option>
+                  <option>5</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-primary">Apply</button>
+            </form>
+            <hr class="my-4">
+            <div id="mapid"></div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">
+              Use of Force by Race
+            </div>
+            <div class="card-body">
+              <div id="chartdiv"></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col-md-6">
           <!-- The div that holds our map -->
-          <div id="mapid"></div>
+          
         </div>
         <div class="col-md-6">
           <!-- The div that holds our barchart -->
@@ -92,6 +114,15 @@
       </div>
     </div>
   </main>
+
+  <div class="loading loading--inactive">
+    <div class="loading__content">
+      <div class="spinner spinner-grow" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+      <div class="loading__text">Loading</div>
+    </div>
+  </div>
 
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
