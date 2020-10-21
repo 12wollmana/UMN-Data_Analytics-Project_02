@@ -3,6 +3,11 @@ const apiBaseURL = `${serverBaseURL}/api`
 const apiCurrentVersion = "v1.0"
 const defaultYear = 2020;
 
+const elements =  {
+  divLoading : d3.select(".loading"),
+  divMap : d3.select("#mapid")
+}
+
 async function main(){
   const map = makeMap();
 
@@ -14,13 +19,28 @@ async function main(){
 
   const caseMarkers = createCaseClustersMarkers(allCasesByYear);
   caseMarkers.addTo(map);
+
+  hideLoading();
 }
 
 main();
 
+function hideLoading(){
+  const loadingElement = elements.divLoading;
+  loadingElement.classed("loading--active", false);
+  loadingElement.classed("loading--inactive", true);
+}
+
+function showLoading(){
+  const loadingElement = elements.divLoading;
+  loadingElement.classed("loading--active", true);
+  loadingElement.classed("loading--inactive", false);
+}
+
 function makeMap(){
+  const mapContainer = elements.divMap;
   // Creating Leaflet map object with maker clusters
-  var myMap = L.map("mapid", {
+  var myMap = L.map(mapContainer.node(), {
     center: [44.9778, -93.2650],
     zoom: 13
   });
