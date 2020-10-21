@@ -5,22 +5,27 @@ const defaultYear = 2020;
 
 const elements =  {
   divLoading : d3.select(".loading"),
-  divMap : d3.select("#mapid")
+  divMap : d3.select("#mapid"),
+  divPieChartRace : d3.select(".chart--race"),
+  divChartBar : d3.select(".chart--bar")
 }
 
 async function main(){
+  showLoading();
+
   const map = makeMap();
 
   const streetLayer = makeStreetTileLayer();
   streetLayer.addTo(map);
 
   await updateCasesByYear(defaultYear, map);
+
+  hideLoading();
 }
 
 main();
 
 async function updateCasesByYear(year, map){
-  showLoading();
 
   const allCasesByYear = await loadCasesByYear(year);
   console.log(allCasesByYear);
@@ -29,8 +34,6 @@ async function updateCasesByYear(year, map){
   caseMarkers.addTo(map);
 
   am4core.ready(() => generateAmCharts(allCasesByYear, year));
-
-  hideLoading();
 }
 
 function hideLoading(){
@@ -114,22 +117,16 @@ function generateAmCharts(cases, year){
 }
 
 function generateRacePieChart(cases, year){
+  const chartElement = elements.divPieChartRace;
+
   // Create chart instance
-  var chart = am4core.create("chartdiv", am4charts.PieChart);
-  // chart.responsive.enabled = true;
+  var chart = am4core.create(chartElement.node(), am4charts.PieChart);
+  //chart.responsive.enabled = true;
 
   chart.data = getRaceData(cases);
   chart.legend = new am4charts.Legend();
   chart.legend.position = "right";
   chart.legend.scrollable = true;
-
-  // Add label
-  chart.innerRadius = 100;
-  var label = chart.seriesContainer.createChild(am4core.Label);
-  label.text = year;
-  label.horizontalCenter = "middle";
-  label.verticalCenter = "middle";
-  label.fontSize = 50;
 
   // Add and configure Series
   var pieSeries = chart.series.push(new am4charts.PieSeries());
