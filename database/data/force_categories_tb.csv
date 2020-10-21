@@ -1,13 +1,13 @@
 force_category_id,category
-1,Bodily Force
-2,Taser
-3,Baton
-4,Police K9 Bite
-5,Improvised Weapon
-6,Chemical Irritant
-7,Firearm
-8,Less Lethal Projectile
-9,Gun Point Display
-10,Maximal Restraint Technique
-11,Null
-12,Less Lethal
+1,bodily force
+2,taser
+3,baton
+4,police k9 bite
+5,improvised weapon
+6,chemical irritant
+7,firearm
+8,less lethal projectile
+9,gun point display
+10,maximal restraint technique
+11,no data
+12,less lethal
