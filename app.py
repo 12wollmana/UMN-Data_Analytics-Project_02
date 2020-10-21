@@ -3,7 +3,7 @@
 ########################################
 
 from sqlalchemy import exc
-from config import username, password;
+from config import username, password
 
 from flask import Flask, jsonify, render_template, abort
 
@@ -16,6 +16,7 @@ from sqlalchemy import create_engine;
 ########################################
 
 app = Flask(__name__)
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 # Prevent caching
 
 engine = create_engine(
     f"postgresql://{username}:{password}@localhost:5432/police_force")
