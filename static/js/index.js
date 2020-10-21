@@ -1,33 +1,66 @@
 const serverBaseURL = "http://127.0.0.1:5000"
 const apiBaseURL = `${serverBaseURL}/api`
 const apiCurrentVersion = "v1.0"
-const defaultYear = 2020;
+let map = {}
 
 const elements =  {
   divLoading : d3.select(".loading"),
   divMap : d3.select("#mapid"),
   divPieChartRace : d3.select(".chart--race"),
   divChartBar : d3.select(".chart--bar"),
-  selectYear : d3.select("#selectYear")
+  selectYear : d3.select("#selectYear"),
+  buttonApplySettings : d3.select("#buttonApplySettings")
 }
 
 async function main(){
   showLoading();
+  bindHandlers();
 
-  const map = makeMap();
+  try{
+    map = makeMap();
 
-  const streetLayer = makeStreetTileLayer();
-  streetLayer.addTo(map);
+    const streetLayer = makeStreetTileLayer();
+    streetLayer.addTo(map);
 
-  const availableYears = await loadAvailableYears();
-  populateSelectYears(availableYears);
-
-  //await updateCasesByYear(defaultYear, map);
-
-  hideLoading();
+    const availableYears = await loadAvailableYears();
+    populateSelectYears(availableYears);
+  }
+  finally {
+    hideLoading();
+  }
 }
 
 main();
+
+
+function bindHandlers(){
+  elements.buttonApplySettings.on("click", onApplySettings);
+}
+
+async function onApplySettings(){
+  showLoading();
+
+  try{
+    const selectElement = elements.selectYear;
+    const selectedOption = selectElement.property("value");
+    console.log(selectedOption);
+
+    if(selectedOption == "None"){
+      clearData();
+    }
+    else{
+      const selectedYear = selectedOption;
+      await updateCasesByYear(selectedYear);
+    }
+  }
+  finally {
+    hideLoading();
+  }
+}
+
+function clearData(){
+  // TODO: Clear Data on None Selection
+}
 
 function populateSelectYears(options){
   const selectElement = elements.selectYear;
@@ -39,7 +72,7 @@ function populateSelectYears(options){
   );
 }
 
-async function updateCasesByYear(year, map){
+async function updateCasesByYear(year){
 
   const allCasesByYear = await loadCasesByYear(year);
   console.log(allCasesByYear);
