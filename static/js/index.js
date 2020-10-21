@@ -7,7 +7,8 @@ const elements =  {
   divLoading : d3.select(".loading"),
   divMap : d3.select("#mapid"),
   divPieChartRace : d3.select(".chart--race"),
-  divChartBar : d3.select(".chart--bar")
+  divChartBar : d3.select(".chart--bar"),
+  selectYear : d3.select("#selectYear")
 }
 
 async function main(){
@@ -18,12 +19,25 @@ async function main(){
   const streetLayer = makeStreetTileLayer();
   streetLayer.addTo(map);
 
-  await updateCasesByYear(defaultYear, map);
+  const availableYears = await loadAvailableYears();
+  populateSelectYears(availableYears);
+
+  //await updateCasesByYear(defaultYear, map);
 
   hideLoading();
 }
 
 main();
+
+function populateSelectYears(options){
+  const selectElement = elements.selectYear;
+  options.forEach(
+    option => {
+      const optionElement = selectElement.append("option");
+      optionElement.text(option);
+    }
+  );
+}
 
 async function updateCasesByYear(year, map){
 
@@ -109,6 +123,12 @@ async function loadCasesByYear(year){
   const url = `${apiBaseURL}/${apiCurrentVersion}/year/${year}`;
   const allCases = await d3.json(url);
   return allCases;
+}
+
+async function loadAvailableYears(){
+  const url = `${apiBaseURL}/${apiCurrentVersion}/year`;
+  const response = await d3.json(url);
+  return response.availableYears;
 }
 
 function generateAmCharts(cases, year){
