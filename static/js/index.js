@@ -1,29 +1,87 @@
 const serverBaseURL = "http://127.0.0.1:5000"
 const apiBaseURL = `${serverBaseURL}/api`
 const apiCurrentVersion = "v1.0"
-const defaultYear = 2020;
+let map = {}
 
 const elements =  {
   divLoading : d3.select(".loading"),
-  divMap : d3.select("#mapid")
+  divMap : d3.select("#mapid"),
+  divPieChartRace : d3.select(".chart--race"),
+  divChartBar : d3.select(".chart--bar"),
+  selectYear : d3.select("#selectYear"),
+  buttonApplySettings : d3.select("#buttonApplySettings")
 }
 
 async function main(){
-  const map = makeMap();
+  showLoading();
+  bindHandlers();
 
-  const streetLayer = makeStreetTileLayer();
-  streetLayer.addTo(map);
+  try{
+    map = makeMap();
 
-  const allCasesByYear = await loadCasesByYear(defaultYear);
+    const streetLayer = makeStreetTileLayer();
+    streetLayer.addTo(map);
+
+    const availableYears = await loadAvailableYears();
+    populateSelectYears(availableYears);
+  }
+  finally {
+    hideLoading();
+  }
+}
+
+main();
+
+
+function bindHandlers(){
+  elements.buttonApplySettings.on("click", onApplySettings);
+}
+
+async function onApplySettings(){
+  showLoading();
+
+  try{
+    const selectElement = elements.selectYear;
+    const selectedOption = selectElement.property("value");
+    console.log(selectedOption);
+
+    if(selectedOption == "None"){
+      clearData();
+    }
+    else{
+      const selectedYear = selectedOption;
+      await updateCasesByYear(selectedYear);
+    }
+  }
+  finally {
+    hideLoading();
+  }
+}
+
+function clearData(){
+  // TODO: Clear Data on None Selection
+}
+
+function populateSelectYears(options){
+  const selectElement = elements.selectYear;
+  options.forEach(
+    option => {
+      const optionElement = selectElement.append("option");
+      optionElement.text(option);
+    }
+  );
+}
+
+async function updateCasesByYear(year){
+
+  const allCasesByYear = await loadCasesByYear(year);
   console.log(allCasesByYear);
 
   const caseMarkers = createCaseClustersMarkers(allCasesByYear);
   caseMarkers.addTo(map);
 
-  hideLoading();
+  am4core.ready(() => generateAmCharts(allCasesByYear, year));
 }
-
-main();
 
 function hideLoading(){
   const loadingElement = elements.divLoading;
@@ -100,188 +158,70 @@ async function loadCasesByYear(year){
   return allCases;
 }
 
-// PIE CHARTS
-
-// Race Pie chart
-am4core.ready(function() {
-
-// Themes begin
-am4core.useTheme(am4themes_animated);
-// Themes end
-
-/**
- * Define data for each year
- */
-var chartData = {
-  "2008": [
-    { "sector": "Agriculture", "size": 6.6 },
-    { "sector": "Mining and Quarrying", "size": 0.6 },
-    { "sector": "Manufacturing", "size": 23.2 },
-    { "sector": "Electricity and Water", "size": 2.2 },
-    { "sector": "Construction", "size": 4.5 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 14.6 },
-    { "sector": "Transport and Communication", "size": 9.3 },
-    { "sector": "Finance, real estate and business services", "size": 22.5 } ],
-  "2009": [
-    { "sector": "Agriculture", "size": 6.4 },
-    { "sector": "Mining and Quarrying", "size": 0.5 },
-    { "sector": "Manufacturing", "size": 22.4 },
-    { "sector": "Electricity and Water", "size": 2 },
-    { "sector": "Construction", "size": 4.2 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 14.8 },
-    { "sector": "Transport and Communication", "size": 9.7 },
-    { "sector": "Finance, real estate and business services", "size": 22 } ],
-  "2010": [
-    { "sector": "Agriculture", "size": 6.1 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 20.9 },
-    { "sector": "Electricity and Water", "size": 1.8 },
-    { "sector": "Construction", "size": 4.2 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 13.7 },
-    { "sector": "Transport and Communication", "size": 9.4 },
-    { "sector": "Finance, real estate and business services", "size": 22.1 } ],
-  "2011": [
-    { "sector": "Agriculture", "size": 6.2 },
-    { "sector": "Mining and Quarrying", "size": 0.3 },
-    { "sector": "Manufacturing", "size": 21.4 },
-    { "sector": "Electricity and Water", "size": 1.9 },
-    { "sector": "Construction", "size": 4.2 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 14.5 },
-    { "sector": "Transport and Communication", "size": 10.6 },
-    { "sector": "Finance, real estate and business services", "size": 23 } ],
-  "2012": [
-    { "sector": "Agriculture", "size": 5.7 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 20 },
-    { "sector": "Electricity and Water", "size": 1.8 },
-    { "sector": "Construction", "size": 4.4 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 15.2 },
-    { "sector": "Transport and Communication", "size": 10.5 },
-    { "sector": "Finance, real estate and business services", "size": 24.7 } ],
-  "2013": [
-    { "sector": "Agriculture", "size": 5.1 },
-    { "sector": "Mining and Quarrying", "size": 0.3 },
-    { "sector": "Manufacturing", "size": 20.4 },
-    { "sector": "Electricity and Water", "size": 1.7 },
-    { "sector": "Construction", "size": 4 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 16.3 },
-    { "sector": "Transport and Communication", "size": 10.7 },
-    { "sector": "Finance, real estate and business services", "size": 24.6 } ],
-  "2014": [
-    { "sector": "Agriculture", "size": 5.5 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 20.3 },
-    { "sector": "Electricity and Water", "size": 1.6 },
-    { "sector": "Construction", "size": 3.1 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 16.3 },
-    { "sector": "Transport and Communication", "size": 10.7 },
-    { "sector": "Finance, real estate and business services", "size": 25.8 } ],
-  "2015": [
-    { "sector": "Agriculture", "size": 5.7 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 20.5 },
-    { "sector": "Electricity and Water", "size": 1.6 },
-    { "sector": "Construction", "size": 3.6 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 16.1 },
-    { "sector": "Transport and Communication", "size": 10.7 },
-    { "sector": "Finance, real estate and business services", "size": 26 } ],
-  "2016": [
-    { "sector": "Agriculture", "size": 4.9 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 19.4 },
-    { "sector": "Electricity and Water", "size": 1.5 },
-    { "sector": "Construction", "size": 3.3 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 16.2 },
-    { "sector": "Transport and Communication", "size": 11 },
-    { "sector": "Finance, real estate and business services", "size": 27.5 } ],
-  "2017": [
-    { "sector": "Agriculture", "size": 4.7 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 18.4 },
-    { "sector": "Electricity and Water", "size": 1.4 },
-    { "sector": "Construction", "size": 3.3 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 16.9 },
-    { "sector": "Transport and Communication", "size": 10.6 },
-    { "sector": "Finance, real estate and business services", "size": 28.1 } ],
-  "2018": [
-    { "sector": "Agriculture", "size": 4.3 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 18.1 },
-    { "sector": "Electricity and Water", "size": 1.4 },
-    { "sector": "Construction", "size": 3.9 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 15.7 },
-    { "sector": "Transport and Communication", "size": 10.6 },
-    { "sector": "Finance, real estate and business services", "size": 29.1 } ],
-  "2019": [
-    { "sector": "Agriculture", "size": 4 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 16.5 },
-    { "sector": "Electricity and Water", "size": 1.3 },
-    { "sector": "Construction", "size": 3.7 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 14.2 },
-    { "sector": "Transport and Communication", "size": 12.1 },
-    { "sector": "Finance, real estate and business services", "size": 29.1 } ],
-  "2020": [
-    { "sector": "Agriculture", "size": 4.7 },
-    { "sector": "Mining and Quarrying", "size": 0.2 },
-    { "sector": "Manufacturing", "size": 16.2 },
-    { "sector": "Electricity and Water", "size": 1.2 },
-    { "sector": "Construction", "size": 4.1 },
-    { "sector": "Trade (Wholesale, Retail, Motor)", "size": 15.6 },
-    { "sector": "Transport and Communication", "size": 11.2 },
-    { "sector": "Finance, real estate and business services", "size": 30.4 } ],
-};
-
-// Create chart instance
-var chart = am4core.create("chartdiv", am4charts.PieChart);
-
-// Add data
-chart.data = [
-  { "sector": "Agriculture", "size": 6.6 },
-  { "sector": "Mining and Quarrying", "size": 0.6 },
-  { "sector": "Manufacturing", "size": 23.2 },
-  { "sector": "Electricity and Water", "size": 2.2 },
-  { "sector": "Construction", "size": 4.5 },
-  { "sector": "Trade (Wholesale, Retail, Motor)", "size": 14.6 },
-  { "sector": "Transport and Communication", "size": 9.3 },
-  { "sector": "Finance, real estate and business services", "size": 22.5 }
-];
-
-// Add label
-chart.innerRadius = 100;
-var label = chart.seriesContainer.createChild(am4core.Label);
-label.text = "2008";
-label.horizontalCenter = "middle";
-label.verticalCenter = "middle";
-label.fontSize = 50;
-
-// Add and configure Series
-var pieSeries = chart.series.push(new am4charts.PieSeries());
-pieSeries.dataFields.value = "size";
-pieSeries.dataFields.category = "sector";
-
-// Animate chart data
-var currentYear = 2008;
-function getCurrentData() {
-  label.text = currentYear;
-  var data = chartData[currentYear];
-  currentYear++;
-  if (currentYear > 2020)
-    currentYear = 2008;
-  return data;
+async function loadAvailableYears(){
+  const url = `${apiBaseURL}/${apiCurrentVersion}/year`;
+  const response = await d3.json(url);
+  return response.availableYears;
 }
 
-function loop() {
-  //chart.allLabels[0].text = currentYear;
-  var data = getCurrentData();
-  for(var i = 0; i < data.length; i++) {
-    chart.data[i].size = data[i].size;
+function generateAmCharts(cases, year){
+  am4core.useTheme(am4themes_animated);
+  generateRacePieChart(cases, year);
+}
+
+function generateRacePieChart(cases, year){
+  const chartElement = elements.divPieChartRace;
+
+  // Create chart instance
+  var chart = am4core.create(chartElement.node(), am4charts.PieChart);
+  //chart.responsive.enabled = true;
+
+  chart.data = getRaceData(cases);
+  chart.legend = new am4charts.Legend();
+  chart.legend.position = "right";
+  chart.legend.scrollable = true;
+
+  // Add and configure Series
+  var pieSeries = chart.series.push(new am4charts.PieSeries());
+  pieSeries.dataFields.value = "count";
+  pieSeries.dataFields.category = "race";
+  pieSeries.labels.template.disabled = true;
+  pieSeries.ticks.template.disabled = true;
+
+  return chart;
+}
+
+function getRaceData(cases){
+  let raceCount = {};
+  for (let caseInfo of cases){
+    const caseData = caseInfo["case"];
+
+    const force = caseData["force"];
+    if(!force) break;
+
+    const subject = force["subject"];
+    if(!subject) break;
+
+    race = subject["race"];
+    if(race){
+      if(raceCount[race] > 0){
+        raceCount[race]++;
+      }
+      else{
+        raceCount[race] = 1;
+      }
+    }
   }
-  chart.invalidateRawData();
-  chart.setTimeout( loop, 4000 );
+
+  let raceStats = [];
+  Object.entries(raceCount).forEach(
+    ([race, count]) => {
+      raceStats.push({
+        "race" : race,
+        "count" : count
+      });
+    }
+  );
+  return raceStats;
 }
-
-loop();
-
-}); // end am4core.ready()
 
