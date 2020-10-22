@@ -19,8 +19,15 @@ const elements =  {
   divChartRowList : d3.selectAll(".row__charts")
 }
 
+/**
+ * Sets a sleep timer.
+ * From: https://stackoverflow.com/questions/33289726/combination-of-async-function-await-settimeout
+ * @param {int} m Time in millseconds
+ */
+const sleep = m => new Promise(r => setTimeout(r, m))
+
 async function main(){
-  showLoading();
+  await showLoading();
   bindHandlers();
 
   try{
@@ -45,9 +52,9 @@ function bindHandlers(){
 }
 
 async function onApplySettings(){
-  showLoading();
-  clearData();
+  await showLoading();
   hideChartRows();
+  clearData();
 
   try{
     const selectElement = elements.selectYear;
@@ -106,10 +113,11 @@ function hideLoading(){
   loadingElement.classed("loading--inactive", true);
 }
 
-function showLoading(){
+async function showLoading(){
   const loadingElement = elements.divLoading;
   loadingElement.classed("loading--active", true);
   loadingElement.classed("loading--inactive", false);
+  await sleep(300);
 }
 
 function hideChartRows(){

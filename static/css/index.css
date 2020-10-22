@@ -32,16 +32,8 @@ h1 {
   overflow-y: none;
   top: 0;
   left: 0;
-  transition: all .5s;
+  transition: all .2s;
 }
-
-/* @supports (backdrop-filter: blur(50px)){
-  .loading {
-    backdrop-filter: blur(50px);
-    background-color: rgba(0, 0, 0, 0.3);
-    color: rgba(0,0,0);
-  }
-} */
 
 .loading--active{
   visibility: visible;
