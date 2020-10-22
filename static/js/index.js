@@ -1,7 +1,13 @@
 const serverBaseURL = "http://127.0.0.1:5000"
 const apiBaseURL = `${serverBaseURL}/api`
 const apiCurrentVersion = "v1.0"
-let map = {}
+
+let state = {
+  "pieCharts" : [],
+  "map" : {},
+  "year" : "",
+  "caseMarkers" : {}
+}
 
 const elements =  {
   divLoading : d3.select(".loading"),
@@ -17,10 +23,10 @@ async function main(){
   bindHandlers();
 
   try{
-    map = makeMap();
+    state.map = makeMap();
 
     const streetLayer = makeStreetTileLayer();
-    streetLayer.addTo(map);
+    streetLayer.addTo(state.map);
 
     const availableYears = await loadAvailableYears();
     populateSelectYears(availableYears);
@@ -45,12 +51,12 @@ async function onApplySettings(){
     const selectedOption = selectElement.property("value");
     console.log(selectedOption);
 
-    if(selectedOption == "None"){
-      clearData();
-    }
-    else{
+    clearData();
+
+    if(selectedOption != "None"){
       const selectedYear = selectedOption;
       await updateCasesByYear(selectedYear);
+      state.year = selectedYear;
     }
   }
   finally {
@@ -59,7 +65,15 @@ async function onApplySettings(){
 }
 
 function clearData(){
-  // TODO: Clear Data on None Selection
+  state.year = "";
+  clearCharts();
+  state.map.removeLayer(state.caseMarkers);
+}
+
+function clearCharts(){
+  let pieCharts = state.pieCharts;
+  pieCharts.forEach(chart => chart.dispose());
+  state.pieCharts = [];
 }
 
 function populateSelectYears(options){
@@ -78,7 +92,8 @@ async function updateCasesByYear(year){
   console.log(allCasesByYear);
 
   const caseMarkers = createCaseClustersMarkers(allCasesByYear);
-  caseMarkers.addTo(map);
+  caseMarkers.addTo(state.map);
+  state.caseMarkers = caseMarkers;
 
   am4core.ready(() => generateAmCharts(allCasesByYear, year));
 }
@@ -164,12 +179,13 @@ async function loadAvailableYears(){
   return response.availableYears;
 }
 
-function generateAmCharts(cases, year){
+function generateAmCharts(cases){
   am4core.useTheme(am4themes_animated);
-  generateRacePieChart(cases, year);
+  let racePieChart = generateRacePieChart(cases);
+  state.pieCharts.push(racePieChart);
 }
 
-function generateRacePieChart(cases, year){
+function generateRacePieChart(cases){
   const chartElement = elements.divPieChartRace;
 
   // Create chart instance
