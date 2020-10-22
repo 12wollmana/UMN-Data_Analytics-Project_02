@@ -10,7 +10,8 @@ html {
 }
 
 #mapid {
-  height: 25rem;
+  min-height: 25rem;
+  height: 50vh;
 }
 
 h1 {
@@ -27,7 +28,7 @@ h1 {
   background-color:var(--dark);
   color: white;
   z-index: 1000000;
-  height: 100vh;
+  height: 100%;
   width: 100%;
   overflow-y: none;
   top: 0;
