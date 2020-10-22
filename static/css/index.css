@@ -82,3 +82,14 @@ main {
   visibility: hidden;
   opacity: 0;
 }
+
+.col__chart--active{
+  visibility: visible;
+  opacity: 100;
+}
+
+.col__chart--inactive{
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+}

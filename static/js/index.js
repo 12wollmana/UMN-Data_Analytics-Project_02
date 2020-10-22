@@ -22,7 +22,19 @@ const elements =  {
   divChartBar : d3.select(".chart--bar"),
   selectYear : d3.select("#selectYear"),
   buttonApplySettings : d3.select("#buttonApplySettings"),
-  divChartRowList : d3.selectAll(".row__charts")
+  divChartRowList : d3.selectAll(".row__charts"),
+  divChartColRace : d3.select(".col__chart-race")
+}
+
+/**
+ * This error will be thrown when 
+ * there is no data to make a chart out of.
+ */
+class NoDataError extends Error{
+  constructor(message){
+    super(message);
+    this.name = "NoDataError"
+  }
 }
 
 /**
@@ -275,8 +287,38 @@ async function loadAvailableYears(){
  */
 function generateAmCharts(cases){
   am4core.useTheme(am4themes_animated);
-  let racePieChart = generateRacePieChart(cases);
-  state.pieCharts.push(racePieChart);
+  
+  try{
+    let racePieChart = generateRacePieChart(cases);
+    showRacePieChartCard();
+    state.pieCharts.push(racePieChart);
+  }
+  catch(error){
+    if(error instanceof NoDataError){
+      hideRacePieChartCard();
+    }
+    else{
+      throw error;
+    }
+  }
+}
+
+/**
+ * Shows the pie chart card on race.
+ */
+function showRacePieChartCard(){
+  let element = elements.divChartColRace;
+  element.classed("col__chart--active", true);
+  element.classed("col__chart--inactive", false)
+}
+
+/**
+ * Hides the pie chart card on race.
+ */
+function hideRacePieChartCard(){
+  let element = elements.divChartColRace;
+  element.classed("col__chart--active", false);
+  element.classed("col__chart--inactive", true);
 }
 
 /**
@@ -288,19 +330,47 @@ function generateAmCharts(cases){
 function generateRacePieChart(cases){
   const chartElement = elements.divPieChartRace;
 
-  // Create chart instance
-  var chart = am4core.create(chartElement.node(), am4charts.PieChart);
-  //chart.responsive.enabled = true;
+  const raceData = getRaceData(cases);
+  if(raceData.length > 0){
 
+  }
+  else{
+    throw new NoDataError("No race data.");
+  }
+  var chart = generateAmPieChart(chartElement, "count", "race");
   chart.data = getRaceData(cases);
+
+  return chart;
+}
+
+/**
+ * Generates a amChart pie chart.
+ * @param {any} parentElement 
+ * Parent HTML element as a d3 object to
+ * append the chart to.
+ * @param {string} valueKey 
+ * Key within the data to bind to the pie value.
+ * @param {*} categoryKey 
+ * Key within the data to bind to the pie category.
+ */
+function generateAmPieChart(
+  parentElement, 
+  valueKey, 
+  categoryKey
+  ){
+    // Create chart instance
+  var chart = am4core.create(
+    parentElement.node(), 
+    am4charts.PieChart);
+
   chart.legend = new am4charts.Legend();
   chart.legend.position = "right";
   chart.legend.scrollable = true;
 
   // Add and configure Series
   var pieSeries = chart.series.push(new am4charts.PieSeries());
-  pieSeries.dataFields.value = "count";
-  pieSeries.dataFields.category = "race";
+  pieSeries.dataFields.value = valueKey;
+  pieSeries.dataFields.category = categoryKey;
   pieSeries.labels.template.disabled = true;
   pieSeries.ticks.template.disabled = true;
 
