@@ -324,6 +324,7 @@ function hideRacePieChartCard(){
 /**
  * Creates a pie chart using amCharts.
  * This pie chart displays the subject's races.
+ * 
  * @param {any[]} cases 
  * The cases to generate the chart from.
  */
@@ -332,25 +333,26 @@ function generateRacePieChart(cases){
 
   const raceData = getRaceData(cases);
   if(raceData.length > 0){
-
+    var chart = generateAmPieChart(chartElement, "count", "race");
+    chart.data = getRaceData(cases);
   }
   else{
     throw new NoDataError("No race data.");
   }
-  var chart = generateAmPieChart(chartElement, "count", "race");
-  chart.data = getRaceData(cases);
 
   return chart;
 }
 
 /**
  * Generates a amChart pie chart.
+ * 
  * @param {any} parentElement 
- * Parent HTML element as a d3 object to
- * append the chart to.
+ * Parent HTML element as a d3 object to append the chart to.
+ * 
  * @param {string} valueKey 
  * Key within the data to bind to the pie value.
- * @param {*} categoryKey 
+ * 
+ * @param {string} categoryKey 
  * Key within the data to bind to the pie category.
  */
 function generateAmPieChart(
