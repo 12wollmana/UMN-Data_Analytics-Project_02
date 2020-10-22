@@ -478,36 +478,6 @@ function generateSexPieChart(cases) {
 }
 
 /**
- * Generates a amChart pie chart.
- *
- * @param {any} parentElement
- * Parent HTML element as a d3 object to append the chart to.
- *
- * @param {string} valueKey
- * Key within the data to bind to the pie value.
- *
- * @param {string} categoryKey
- * Key within the data to bind to the pie category.
- */
-function generateAmPieChart(parentElement, valueKey, categoryKey) {
-  // Create chart instance
-  var chart = am4core.create(parentElement.node(), am4charts.PieChart);
-
-  chart.legend = new am4charts.Legend();
-  chart.legend.position = "right";
-  chart.legend.scrollable = true;
-
-  // Add and configure Series
-  var pieSeries = chart.series.push(new am4charts.PieSeries());
-  pieSeries.dataFields.value = valueKey;
-  pieSeries.dataFields.category = categoryKey;
-  pieSeries.labels.template.disabled = true;
-  pieSeries.ticks.template.disabled = true;
-
-  return chart;
-}
-
-/**
  * Gets all the sex data from a list of cases.
  *
  * @param {any[]} cases
@@ -543,4 +513,3 @@ function getSexData(cases) {
   });
   return sexStats;
 }
-
