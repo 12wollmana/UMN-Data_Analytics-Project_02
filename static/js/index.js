@@ -2,6 +2,9 @@ const serverBaseURL = "http://127.0.0.1:5000"
 const apiBaseURL = `${serverBaseURL}/api`
 const apiCurrentVersion = "v1.0"
 
+/**
+ * Global variables for the state of the page.
+ */
 let state = {
   "pieCharts" : [],
   "map" : {},
@@ -9,6 +12,9 @@ let state = {
   "caseMarkers" : {}
 }
 
+/**
+ * HTML elements on the page as d3 objects.
+ */
 const elements =  {
   divLoading : d3.select(".loading"),
   divMap : d3.select("#mapid"),
@@ -21,7 +27,9 @@ const elements =  {
 
 /**
  * Sets a sleep timer.
+ * 
  * From: https://stackoverflow.com/questions/33289726/combination-of-async-function-await-settimeout
+ * 
  * @param {int} m Time in millseconds
  */
 const sleep = m => new Promise(r => setTimeout(r, m))
