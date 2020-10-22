@@ -80,6 +80,8 @@ function bindHandlers(){
  * Handler for applying settings.
  */
 async function onApplySettings(){
+  d3.event.preventDefault();
+
   await showLoading();
   hideChartRows();
   clearData();
