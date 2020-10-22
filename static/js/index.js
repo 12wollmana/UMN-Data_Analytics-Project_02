@@ -19,11 +19,13 @@ const elements = {
   divLoading: d3.select(".loading"),
   divMap: d3.select("#mapid"),
   divPieChartRace: d3.select(".chart--race"),
+  divPieChartSex: d3.select(".chart--sex"),
   divChartBar: d3.select(".chart--bar"),
   selectYear: d3.select("#selectYear"),
   buttonApplySettings: d3.select("#buttonApplySettings"),
   divChartRowList: d3.selectAll(".row__charts"),
   divChartColRace: d3.select(".col__chart-race"),
+  divChartColSex: d3.select(".col__chart-sex"),
 };
 
 /**
@@ -303,6 +305,18 @@ function generateAmCharts(cases) {
       throw error;
     }
   }
+
+  try {
+    let sexPieChart = generateSexPieChart(cases);
+    showSexPieChartCard();
+    state.pieCharts.push(sexPieChart);
+  } catch (error) {
+    if (error instanceof NoDataError) {
+      hideSexPieChartCard();
+    } else {
+      throw error;
+    }
+  }
 }
 
 /**
@@ -314,10 +328,26 @@ function showRacePieChartCard() {
 }
 
 /**
+ * Shows the pie chart card on sex.
+ */
+function showSexPieChartCard() {
+  let element = elements.divChartColSex;
+  showElements(element);
+}
+
+/**
  * Hides the pie chart card on race.
  */
 function hideRacePieChartCard() {
   let element = elements.divChartColRace;
+  hideElements(element);
+}
+
+/**
+ * Hides the pie chart card on sex.
+ */
+function hideSexPieChartCard() {
+  let element = elements.divChartColSex;
   hideElements(element);
 }
 
@@ -426,3 +456,91 @@ function getRaceData(cases) {
   });
   return raceStats;
 }
+
+/**
+ * This pie chart displays the subject's sex.
+ *
+ * @param {any[]} cases
+ * The cases to generate the chart from.
+ */
+function generateSexPieChart(cases) {
+  const chartElement = elements.divPieChartSex;
+
+  const sexData = getSexData(cases);
+  if (sexData.length > 0) {
+    var chart = generateAmPieChart(chartElement, "count", "sex");
+    chart.data = getSexData(cases);
+  } else {
+    throw new NoDataError("No sex data.");
+  }
+
+  return chart;
+}
+
+/**
+ * Generates a amChart pie chart.
+ *
+ * @param {any} parentElement
+ * Parent HTML element as a d3 object to append the chart to.
+ *
+ * @param {string} valueKey
+ * Key within the data to bind to the pie value.
+ *
+ * @param {string} categoryKey
+ * Key within the data to bind to the pie category.
+ */
+function generateAmPieChart(parentElement, valueKey, categoryKey) {
+  // Create chart instance
+  var chart = am4core.create(parentElement.node(), am4charts.PieChart);
+
+  chart.legend = new am4charts.Legend();
+  chart.legend.position = "right";
+  chart.legend.scrollable = true;
+
+  // Add and configure Series
+  var pieSeries = chart.series.push(new am4charts.PieSeries());
+  pieSeries.dataFields.value = valueKey;
+  pieSeries.dataFields.category = categoryKey;
+  pieSeries.labels.template.disabled = true;
+  pieSeries.ticks.template.disabled = true;
+
+  return chart;
+}
+
+/**
+ * Gets all the sex data from a list of cases.
+ *
+ * @param {any[]} cases
+ * The cases to find the sex data from.
+ */
+function getSexData(cases) {
+  let sexCount = {};
+  for (let caseInfo of cases) {
+    const caseData = caseInfo["case"];
+
+    const force = caseData["force"];
+    if (!force) break;
+
+    const subject = force["subject"];
+    if (!subject) break;
+
+    sex = subject["sex"];
+    if (sex) {
+      if (sexCount[sex] > 0) {
+        sexCount[sex]++;
+      } else {
+        sexCount[sex] = 1;
+      }
+    }
+  }
+
+  let sexStats = [];
+  Object.entries(sexCount).forEach(([sex, count]) => {
+    sexStats.push({
+      sex: sex,
+      count: count,
+    });
+  });
+  return sexStats;
+}
+
