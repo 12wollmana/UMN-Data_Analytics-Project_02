@@ -26,6 +26,9 @@ const elements =  {
  */
 const sleep = m => new Promise(r => setTimeout(r, m))
 
+/**
+ * Main application logic.
+ */
 async function main(){
   await showLoading();
   bindHandlers();
@@ -46,11 +49,16 @@ async function main(){
 
 main();
 
-
+/**
+ * Binds all handlers to their elements.
+ */
 function bindHandlers(){
   elements.buttonApplySettings.on("click", onApplySettings);
 }
 
+/**
+ * Handler for applying settings.
+ */
 async function onApplySettings(){
   await showLoading();
   hideChartRows();
@@ -73,18 +81,29 @@ async function onApplySettings(){
   }
 }
 
+/**
+ * Clears data from page.
+ */
 function clearData(){
   state.year = "";
   clearCharts();
   state.map.removeLayer(state.caseMarkers);
 }
 
+/**
+ * Clears all charts.
+ */
 function clearCharts(){
   let pieCharts = state.pieCharts;
   pieCharts.forEach(chart => chart.dispose());
   state.pieCharts = [];
 }
 
+/**
+ * Populates the select years element with options.
+ * @param {string[]} options 
+ * The options to add to the element.
+ */
 function populateSelectYears(options){
   const selectElement = elements.selectYear;
   options.forEach(
@@ -95,6 +114,11 @@ function populateSelectYears(options){
   );
 }
 
+/**
+ * Updates the page with cases from a specified year.
+ * @param {int} year 
+ * The year to load cases from.
+ */
 async function updateCasesByYear(year){
 
   const allCasesByYear = await loadCasesByYear(year);
@@ -107,31 +131,46 @@ async function updateCasesByYear(year){
   am4core.ready(() => generateAmCharts(allCasesByYear, year));
 }
 
+/**
+ * Hides the loading screen from the page.
+ */
 function hideLoading(){
   const loadingElement = elements.divLoading;
   loadingElement.classed("loading--active", false);
   loadingElement.classed("loading--inactive", true);
 }
 
+/**
+ * Shows the loading screen on the page.
+ */
 async function showLoading(){
   const loadingElement = elements.divLoading;
   loadingElement.classed("loading--active", true);
   loadingElement.classed("loading--inactive", false);
-  await sleep(300);
+  await sleep(300); // Wait for cover-up animation to finish
 }
 
+/**
+ * Hides all charts from the page.
+ */
 function hideChartRows(){
   const chartRowElements = elements.divChartRowList;
   chartRowElements.classed("row__charts--inactive", true);
   chartRowElements.classed("row__charts--active", false);
 }
 
+/**
+ * Shows all charts on the page.
+ */
 function showChartRows(){
   const chartRowElements = elements.divChartRowList;
   chartRowElements.classed("row__charts--inactive", false);
   chartRowElements.classed("row__charts--active", true);
 }
 
+/**
+ * Creates a map on the page.
+ */
 function makeMap(){
   const mapContainer = elements.divMap;
   // Creating Leaflet map object with maker clusters
@@ -143,6 +182,9 @@ function makeMap(){
   return myMap;
 }
 
+/**
+ * Creates a street tile layer for the map.
+ */
 function makeStreetTileLayer(){
   // Adding tile layer
   const streetsLayer = L.tileLayer(
@@ -160,6 +202,12 @@ function makeStreetTileLayer(){
   return streetsLayer;
 }
 
+/**
+ * Creates a marker cluster layer from a list of cases
+ * to display on the map.
+ * @param {any[]} cases 
+ * Cases to create the markers from.
+ */
 function createCaseClustersMarkers(cases){
   var markers = L.markerClusterGroup();
 
@@ -189,24 +237,46 @@ function createCaseClustersMarkers(cases){
   return markers;
 }
 
+/**
+ * Loads all cases for the specified year from the database.
+ * @param {int} year 
+ * The year to load the cases for.
+ */
 async function loadCasesByYear(year){
   const url = `${apiBaseURL}/${apiCurrentVersion}/year/${year}`;
   const allCases = await d3.json(url);
   return allCases;
 }
 
+/**
+ * Loads all available years from the database.
+ */
 async function loadAvailableYears(){
   const url = `${apiBaseURL}/${apiCurrentVersion}/year`;
   const response = await d3.json(url);
   return response.availableYears;
 }
 
+/**
+ * Generates a set of charts using amCharts.
+ * 
+ * https://www.amcharts.com/docs/v4/
+ * 
+ * @param {any[]} cases 
+ * The cases to generate the charts from.
+ */
 function generateAmCharts(cases){
   am4core.useTheme(am4themes_animated);
   let racePieChart = generateRacePieChart(cases);
   state.pieCharts.push(racePieChart);
 }
 
+/**
+ * Creates a pie chart using amCharts.
+ * This pie chart displays the subject's races.
+ * @param {any[]} cases 
+ * The cases to generate the chart from.
+ */
 function generateRacePieChart(cases){
   const chartElement = elements.divPieChartRace;
 
@@ -229,6 +299,11 @@ function generateRacePieChart(cases){
   return chart;
 }
 
+/**
+ * Gets all the race data from a list of cases.
+ * @param {any[]} cases 
+ * The cases to find the race data from.
+ */
 function getRaceData(cases){
   let raceCount = {};
   for (let caseInfo of cases){
