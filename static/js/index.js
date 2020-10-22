@@ -175,8 +175,7 @@ async function showLoading(){
  */
 function hideChartRows(){
   const chartRowElements = elements.divChartRowList;
-  chartRowElements.classed("row__charts--inactive", true);
-  chartRowElements.classed("row__charts--active", false);
+  hideElements(chartRowElements);
 }
 
 /**
@@ -184,8 +183,7 @@ function hideChartRows(){
  */
 function showChartRows(){
   const chartRowElements = elements.divChartRowList;
-  chartRowElements.classed("row__charts--inactive", false);
-  chartRowElements.classed("row__charts--active", true);
+  showElements(chartRowElements);
 }
 
 /**
@@ -308,8 +306,7 @@ function generateAmCharts(cases){
  */
 function showRacePieChartCard(){
   let element = elements.divChartColRace;
-  element.classed("col__chart--active", true);
-  element.classed("col__chart--inactive", false)
+  showElements(element);
 }
 
 /**
@@ -317,8 +314,25 @@ function showRacePieChartCard(){
  */
 function hideRacePieChartCard(){
   let element = elements.divChartColRace;
-  element.classed("col__chart--active", false);
-  element.classed("col__chart--inactive", true);
+  hideElements(element);
+}
+
+/**
+ * Hide one or more elements on the page.
+ * @param {any} elements 
+ * Elements to hide as a d3 object.
+ */
+function hideElements(elements){
+  elements.classed("hidden", true);
+}
+
+/**
+ * Shows one or more elements on the page.
+ * @param {any} elements 
+ * Elements to hide as a d3 object.
+ */
+function showElements(elements){
+  elements.classed("hidden", false);
 }
 
 /**
