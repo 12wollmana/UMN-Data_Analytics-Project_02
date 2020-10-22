@@ -156,8 +156,7 @@ async function updateCasesByYear(year){
  */
 function hideLoading(){
   const loadingElement = elements.divLoading;
-  loadingElement.classed("loading--active", false);
-  loadingElement.classed("loading--inactive", true);
+  hideElements(loadingElement);
 }
 
 /**
@@ -165,8 +164,7 @@ function hideLoading(){
  */
 async function showLoading(){
   const loadingElement = elements.divLoading;
-  loadingElement.classed("loading--active", true);
-  loadingElement.classed("loading--inactive", false);
+  showElements(loadingElement);
   await sleep(300); // Wait for cover-up animation to finish
 }
 

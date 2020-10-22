@@ -32,17 +32,15 @@ h1 {
   overflow-y: none;
   top: 0;
   left: 0;
+  opacity: 100;
+  visibility: visible;
   transition: all .2s;
 }
 
-.loading--active{
-  visibility: visible;
-  opacity: 100;
-}
-
-.loading--inactive{
-  visibility: hidden;
+.loading.hidden{
+  display: block;
   opacity: 0;
+  visibility: hidden;
 }
 
 .loading__content {
