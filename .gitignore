@@ -490,8 +490,13 @@ dmypy.json
 cython_debug/
 
 # User-Added
-static/js/config.js
-*.icloud
-*.DS_Store
+config.js
+*/config.js
+
 config.py
 */config.py
+
+.DS_Store
+*.DS_Store
+
+*.icloud
