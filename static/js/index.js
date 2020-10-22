@@ -15,7 +15,8 @@ const elements =  {
   divPieChartRace : d3.select(".chart--race"),
   divChartBar : d3.select(".chart--bar"),
   selectYear : d3.select("#selectYear"),
-  buttonApplySettings : d3.select("#buttonApplySettings")
+  buttonApplySettings : d3.select("#buttonApplySettings"),
+  divChartRowList : d3.selectAll(".row__charts")
 }
 
 async function main(){
@@ -45,18 +46,19 @@ function bindHandlers(){
 
 async function onApplySettings(){
   showLoading();
+  clearData();
+  hideChartRows();
 
   try{
     const selectElement = elements.selectYear;
     const selectedOption = selectElement.property("value");
     console.log(selectedOption);
 
-    clearData();
-
     if(selectedOption != "None"){
       const selectedYear = selectedOption;
       await updateCasesByYear(selectedYear);
       state.year = selectedYear;
+      showChartRows();
     }
   }
   finally {
@@ -108,6 +110,18 @@ function showLoading(){
   const loadingElement = elements.divLoading;
   loadingElement.classed("loading--active", true);
   loadingElement.classed("loading--inactive", false);
+}
+
+function hideChartRows(){
+  const chartRowElements = elements.divChartRowList;
+  chartRowElements.classed("row__charts--inactive", true);
+  chartRowElements.classed("row__charts--active", false);
+}
+
+function showChartRows(){
+  const chartRowElements = elements.divChartRowList;
+  chartRowElements.classed("row__charts--inactive", false);
+  chartRowElements.classed("row__charts--active", true);
 }
 
 function makeMap(){

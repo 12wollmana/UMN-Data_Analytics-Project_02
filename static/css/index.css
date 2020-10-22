@@ -79,3 +79,14 @@ h1 {
 main {
   margin: 4rem 0;
 }
+
+.row__charts--active{
+  visibility: visible;
+  opacity: 100;
+}
+
+.row__charts--inactive{
+  display: none;
+  visibility: hidden;
+  opacity: 0;
+}
