@@ -81,7 +81,7 @@ If something goes wrong and you need to redo these instructions, make sure to ru
 Utilize Jupyter Notebook Environment to do ETL process.
 <ol>
   <li>
-    Open a command prompt (for windows) or terminal (for mac), change directory to <strong>./database/etl</strong> and run <strong>jupyter notebook</storng> as the command.
+    Open a command prompt (for windows) or terminal (for mac), change directory to <strong>./database/etl</strong> and run <strong>jupyter notebook</strong> as the command.
   </li>
   <li>
     Run <strong>etl.ipynb</strong> under jupyter notebook environemnt.
@@ -91,6 +91,7 @@ Utilize Jupyter Notebook Environment to do ETL process.
   </li>
   The last dialog should show something like this if the ETL process has been run successfully:
   <img src="database/uml/etl.PNG" alt="ETL">
+
 </ol>
 
 ## Sources
