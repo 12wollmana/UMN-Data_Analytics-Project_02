@@ -707,18 +707,22 @@ function getAgeData(cases) {
     age = subject["age"];
     if (age < 0) {
       ageGroup = nullLabel;
-    } else if (age <= 15) {
-      ageGroup = "0-15";
-    } else if (age > 15 && age <= 30) {
-      ageGroup = "15-30";
-    } else if (age > 30 && age <= 45) {
-      ageGroup = "30-45";
-    } else if (age > 45 && age <= 60) {
-      ageGroup = "45-60";
-    } else if (age > 60 && age <= 75) {
-      ageGroup = "45-75";
-    } else if (age > 75) {
-      ageGroup = "75+";
+    } else if (age <= 10) {
+      ageGroup = "0-10";
+    } else if (age > 10 && age <= 20) {
+      ageGroup = "10-20";
+    } else if (age > 20 && age <= 30) {
+      ageGroup = "20-30";
+    } else if (age > 30 && age <= 40) {
+      ageGroup = "30-40";
+    } else if (age > 40 && age <= 50) {
+      ageGroup = "40-50";
+    } else if (age > 50 && age <= 60) {
+      ageGroup = "50-60";
+    } else if (age > 60 && age <= 70) {
+      ageGroup = "60-70";
+    } else if (age > 70) {
+      ageGroup = "70+";
     }
 
     if (ageCount[ageGroup] > 0) {
