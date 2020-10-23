@@ -464,6 +464,7 @@ function hideSexPieChartCard() {
 /**
  * Hides the pie chart card on sex.
  */
+
 function hideAgePieChartCard() {
   let element = elements.divChartColAge;
   hideElements(element);
