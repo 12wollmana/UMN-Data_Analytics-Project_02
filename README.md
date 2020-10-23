@@ -77,9 +77,12 @@ Here is what the database should look like:
 
 If something goes wrong and you need to redo these instructions, make sure to run <strong>database/queries/delete.sql</strong> before the above instructions so that the tables are cleared and deleted.
 
-#### Populate Database
-##### Utilize Jupyter Notebook Environment to do ETL process.
+### Populate Database
+#### Utilize Jupyter Notebook Environment to do ETL process.
 <ol>
+  <li>
+    Run a <strong>Command Prompt</strong> (for windows) or <strong>Terminal</strong> (for mac).
+  </li>
   <li>
     Run <strong>source active NewPythonData</strong> as the command.
   </li>
@@ -94,7 +97,95 @@ If something goes wrong and you need to redo these instructions, make sure to ru
   </li>
   The last dialog should show something like this if the ETL process has been run successfully:<br>
   <img width=300px height=300px src="database/uml/etl.png">
+</ol>
 
+#### Double Check If The Dataset Imported Successfully 
+<ol>
+  <li>
+    Open an instance of pgAdmin.
+  </li>
+  <li>
+    Open a query under <strong>police_force</strong> database.
+  </li>
+  <li>
+    Run <strong>database/queries/check.sql</strong> to check the tables within the police_force.
+  </li>
+</ol>
+
+### Setup Web Server
+#### Utilize Flask as Web Server
+<ol>
+  <li>
+    Run a <strong>Command Prompt</strong> (for windows) or <strong>Terminal</strong> (for mac).
+  </li>
+  <li>
+    Run <strong>source active NewPythonData</strong> as the command.
+  </li>
+  <li>
+    Change directory to <strong>root directory of this project</strong>.
+  </li>
+  <li>
+    Run <strong>python app.py</strong> as the command. It will shows up a link that hold the web server.
+    <br>The result should look like this:<br>
+    <img width=500px height=300px src="database/uml/flask.png">
+  </li>
+</ol>
+
+### Browsing the Webpage
+<ol>  
+  <li>
+    Open a browser and enter the link: <strong>http://127.0.0.1:5000/</strong> to visit the webpage.
+  </li>
+</ol>
+
+
+## JSON API Documentation
+### API Version
+<ol>
+  <li>
+    Visit the link: <storng>http://127.0.0.1:5000/api</strong> to view the API Version and Update History.
+  </li>
+  <li>
+    Click the <strong>most current</strong> API version to see the API document.
+  </li>
+</ol>
+
+### API Document
+#### Four perspectives are provided via this API
+<ol>
+  <li>
+    City:<br>
+    <ul>
+      <li>A list of <strong>City and City_ID</strong> in the database.<br> http://127.0.0.1:5000/api/api_version/city/</li>
+      <li>A list of <strong> Yearly Total Calls of Speicfic City</strong>.<br>http://127.0.0.1:5000/api_version/v1.0/city/city_id </li>
+    </ul>
+  </li>
+
+  <li>
+    Neighborhood:<br>
+    <ul>
+      <li>A list of <strong>Neighborhood and Neighborhood_ID</strong> in the database.<br> http://127.0.0.1:5000/api/api_version/neighborhood/</li>
+      <li>A list of <strong> Yearly Total Calls of Speicfic Neighborhood</strong>.<br>http://127.0.0.1:5000/api/api_version/neighborhood/neighborhood_id </li>
+    </ul>
+  </li>
+
+  <li>
+    Precinct:<br>
+    <ul>
+      <li>A list of <strong>Precinct and Precinct_ID</strong> in the database.<br> http://127.0.0.1:5000/api/api_version/precinct/</li>
+      <li>A list of <strong> Yearly Total Calls of Speicfic Precinct</strong>.<br>http://127.0.0.1:5000/api/api_version/precinct/precinct_id </li>
+    </ul>
+  </li>
+
+  <li>
+    Year:<br>
+    <ul>
+      <li>A list of <strong>Years</strong> that is available in the database.<br> http://127.0.0.1:5000/api/api_version/year/</li>
+      <li>A list of <strong> Detail Information of Each Case in Specific Year</strong>.<br>http://127.0.0.1:5000/api/api_version/year/specific_year </li>
+    </ul>
+  </li>
+  
+ 
 </ol>
 
 ## Sources
