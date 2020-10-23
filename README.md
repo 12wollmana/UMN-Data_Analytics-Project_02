@@ -184,9 +184,48 @@ If something goes wrong and you need to redo these instructions, make sure to ru
       <li>A list of <strong> Detail Information of Each Case in Specific Year</strong>.<br>http://127.0.0.1:5000/api/api_version/year/specific_year </li>
     </ul>
   </li>
-  
- 
 </ol>
+
+### The Visualizations
+#### Apply a year to view the visualizaitons
+<ol>
+  <li>
+    Select a year from the bottom right dropdown list and click <strong>Apply</storng>.
+  </li>
+</ol>
+
+##### There are five differnet graphs presenting in the webpage once you applied a year.
+<ol>
+  <li>
+    City Map:<br>
+    <ul>
+      <li>
+        Showing the numbers of cases happened in an area.   You can <strong>zoom in and out</strong> to change the scope of the view.
+      </li>
+      <li>
+        <strong>Click the mark</strong> to see the detail information of each case.
+      </li>
+  </li>
+
+  <li>
+    Use of Force by Race Pie Chart:<br>
+    <ul>
+      <li>Illustrating the subjects by races.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+  </li>
+
+  <li>
+  </li>
+
+  <li>
+  </li>
+
+
+<ol>
 
 ## Sources
 Police force data from [Open Minneapolis](https://opendata.minneapolismn.gov/datasets/police-use-of-force).
