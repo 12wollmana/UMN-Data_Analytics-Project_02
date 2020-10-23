@@ -78,10 +78,13 @@ Here is what the database should look like:
 If something goes wrong and you need to redo these instructions, make sure to run <strong>database/queries/delete.sql</strong> before the above instructions so that the tables are cleared and deleted.
 
 #### Populate Database
-Utilize Jupyter Notebook Environment to do ETL process.
+##### Utilize Jupyter Notebook Environment to do ETL process.
 <ol>
   <li>
-    Open a command prompt (for windows) or terminal (for mac), change directory to <strong>./database/etl</strong> and run <strong>jupyter notebook</strong> as the command.
+    Run <strong>source active NewPythonData</strong> as the command.
+  </li>
+  <li>
+     Change directory to <strong>./database/etl</strong> and run <strong>jupyter notebook</strong> as the command.
   </li>
   <li>
     Run <strong>etl.ipynb</strong> under jupyter notebook environemnt.
@@ -89,8 +92,8 @@ Utilize Jupyter Notebook Environment to do ETL process.
   <li>
     Hit the dobule arrow <strong>restrat the kernel, then re-run the whole notebook (with dialog)</strong> and click <strong> "Restart and Run All Cells"</strong> to process the whole ETL process.
   </li>
-  The last dialog should show something like this if the ETL process has been run successfully:
-  <img src="database/uml/etl.png">
+  The last dialog should show something like this if the ETL process has been run successfully:<br>
+  <img width=300px height=300px src="database/uml/etl.png">
 
 </ol>
 
