@@ -240,25 +240,95 @@ function createCaseClustersMarkers(cases) {
 
     const longitude = currentCase.longitude;
     const latitude = currentCase.latitude;
-    const date = currentCase.date;
-    const problem = currentCase.problem;
+    
 
     if (longitude && latitude) {
       const marker = L.marker([latitude, longitude]);
       marker.bindPopup(
-        `
-        <h3>
-        ${problem}
-        </h3>
-        <hr>
-        ${date}
-        `
+       createMarkerPopup(currentCase)
       );
       markers.addLayer(marker);
     }
   });
 
   return markers;
+}
+
+function createMarkerPopup(currentCase){
+    const year = currentCase.year;
+    const month = currentCase.month;
+    const day = currentCase.day;
+    const hour = currentCase.hour;
+    const problem = currentCase.problem;
+    const caseNumber = currentCase.caseNumber;
+
+    let popupHTML = (
+      `
+      <h6>
+      Case #${caseNumber}
+      </h6>
+      <hr>
+      `
+    );
+
+    popupHTML += `${month}/${day}/${year} after ${formatHour(hour)}`;
+
+
+    const force = currentCase["force"];
+    if(!force){
+      return popupHTML;
+    }
+
+    popupHTML += createValueLabelHTML(
+      force.forceCategory,
+      "Force"
+    );
+
+    popupHTML += createValueLabelHTML(
+      force.forceAction,
+      "Action"
+    );
+
+    const subject = force["subject"];
+    if(!subject){
+      return popupHTML;
+    }
+
+    popupHTML += createValueLabelHTML(
+      subject.age,
+      "Age"
+    );
+
+    popupHTML += createValueLabelHTML(
+      subject.sex,
+      "Sex"
+    );    
+
+    return popupHTML
+}
+
+function createValueLabelHTML(value, label){
+  if(!value) return "";
+
+  let popupHTML = "<br>";
+  if(label){
+    popupHTML += `${label}: ${value}`;
+  }
+  else{
+    popupHTML += `${value}`;
+  }
+
+  return popupHTML;
+}
+
+function formatHour(hour){
+  let isPM = hour >= 12;
+  let hourDisplay = hour % 12;
+  if(hourDisplay === 0){
+    hourDisplay = 12;
+  }
+
+  return `${hourDisplay}${isPM ? "PM" : "AM"}`;
 }
 
 /**
