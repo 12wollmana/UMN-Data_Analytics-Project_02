@@ -90,7 +90,7 @@ Utilize Jupyter Notebook Environment to do ETL process.
     Hit the dobule arrow <strong>restrat the kernel, then re-run the whole notebook (with dialog)</strong> and click <strong> "Restart and Run All Cells"</strong> to process the whole ETL process.
   </li>
   The last dialog should show something like this if the ETL process has been run successfully:
-  <img src="database/uml/etl.PNG">
+  <img src="database/uml/etl.png">
 
 </ol>
 
