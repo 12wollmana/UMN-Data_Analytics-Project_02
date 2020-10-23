@@ -74,6 +74,9 @@ async function main() {
 
     const availableYears = await loadAvailableYears();
     populateSelectYears(availableYears);
+  } catch (error) {
+    showError("Could not initialize page.");
+    throw error;
   } finally {
     hideLoading();
   }
