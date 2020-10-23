@@ -27,6 +27,15 @@
 
 #### Python
 <ol>
+  <li> 
+    Make a copy of <strong>config.template.py</strong> in the root directory of this project. (UMN-Data_Analytics-Project_02)
+  </li>
+  <li>
+    Rename this file to <strong>config.py</strong>.
+  </li>
+  <li>
+	  Edit the file, replacing the variables with the proper values.
+	</li>
 </ol>
 
 ### Setup Database
@@ -69,7 +78,20 @@ Here is what the database should look like:
 If something goes wrong and you need to redo these instructions, make sure to run <strong>database/queries/delete.sql</strong> before the above instructions so that the tables are cleared and deleted.
 
 #### Populate Database
-
+Utilize Jupyter Notebook Environment to do ETL process.
+<ol>
+  <li>
+    Open a command prompt (for windows) or terminal (for mac), change directory to <strong>./database/etl</strong> and run <strong>jupyter notebook</storng> as the command.
+  </li>
+  <li>
+    Run <strong>etl.ipynb</strong> under jupyter notebook environemnt.
+  </li>
+  <li>
+    Hit the dobule arrow <strong>restrat the kernel, then re-run the whole notebook (with dialog)</storng> and click <strong> "Restart and Run All Cells"</strong> to process the whole ETL process.
+  </li>
+  The last dialog should show something like this if the ETL process has been run successfully:
+  <img src="database/uml/etl.PNG" alt="ETL">
+</ol>
 
 ## Sources
 Police force data from [Open Minneapolis](https://opendata.minneapolismn.gov/datasets/police-use-of-force).
