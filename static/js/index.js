@@ -297,7 +297,11 @@ function createMarkerPopup(currentCase) {
   }
 
   popupHTML += `<hr><h6>Subject</h6>`;
-  popupHTML += createValueLabelHTML(subject.age, "Age");
+  const age = subject.age;
+  if(age < 0){
+    age = nullLabel;
+  }
+  popupHTML += createValueLabelHTML(age, "Age");
   popupHTML += createValueLabelHTML(subject.sex, "Sex");
   popupHTML += createValueLabelHTML(subject.race, "Race");
   popupHTML += createValueLabelHTML(
