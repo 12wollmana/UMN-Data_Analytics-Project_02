@@ -249,10 +249,16 @@ function createCaseClustersMarkers(cases) {
       marker.bindPopup(
         `
         <h3>
+        Problem:
         ${problem}
         </h3>
         <hr>
+        Date:
         ${date}
+        Police Force:
+        ${force_action}
+        Was Subject Injured:
+        ${has_injury}
         `
       );
       markers.addLayer(marker);
