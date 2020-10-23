@@ -98,7 +98,6 @@ async function onApplySettings() {
   try {
     const selectElement = elements.selectYear;
     const selectedOption = selectElement.property("value");
-    console.log(selectedOption);
 
     if (selectedOption != "None") {
       const selectedYear = selectedOption;
@@ -296,6 +295,7 @@ async function loadAvailableYears() {
 function generateAmCharts(cases) {
   am4core.useTheme(am4themes_animated);
 
+  // Race Pie Chart
   try {
     let racePieChart = generateRacePieChart(cases);
     showRacePieChartCard();
@@ -376,7 +376,8 @@ function hideSexPieChartCard() {
 /**
  * Hides the pie chart card on sex.
  */
-function hideAgeChartCard() {
+
+function hideAgePieChartCard() {
   let element = elements.divChartColAge;
   hideElements(element);
 }
@@ -412,7 +413,7 @@ function generateRacePieChart(cases) {
   const raceData = getRaceData(cases);
   if (raceData.length > 0) {
     var chart = generateAmPieChart(chartElement, "count", "race");
-    chart.data = getRaceData(cases);
+    chart.data = raceData;
   } else {
     throw new NoDataError("No race data.");
   }
@@ -499,7 +500,7 @@ function generateSexPieChart(cases) {
   const sexData = getSexData(cases);
   if (sexData.length > 0) {
     var chart = generateAmPieChart(chartElement, "count", "sex");
-    chart.data = getSexData(cases);
+    chart.data = sexData;
   } else {
     throw new NoDataError("No sex data.");
   }
@@ -557,40 +558,10 @@ function generateAgePieChart(cases) {
   const ageData = getAgeData(cases);
   if (ageData.length > 0) {
     var chart = generateAmPieChart(chartElement, "count", "ageGroup");
-    chart.data = getAgeData(cases);
+    chart.data = ageData;
   } else {
     throw new NoDataError("No age data.");
   }
-  return chart;
-}
-
-/**
- * Generates a amChart pie chart.
- *
- * @param {any} parentElement
- * Parent HTML element as a d3 object to append the chart to.
- *
- * @param {string} valueKey
- * Key within the data to bind to the pie value.
- *
- * @param {string} categoryKey
- * Key within the data to bind to the pie category.
- */
-function generateAmPieChart(parentElement, valueKey, categoryKey) {
-  // Create chart instance
-  var chart = am4core.create(parentElement.node(), am4charts.PieChart);
-
-  chart.legend = new am4charts.Legend();
-  chart.legend.position = "right";
-  chart.legend.scrollable = true;
-
-  // Add and configure Series
-  var pieSeries = chart.series.push(new am4charts.PieSeries());
-  pieSeries.dataFields.value = valueKey;
-  pieSeries.dataFields.category = categoryKey;
-  pieSeries.labels.template.disabled = true;
-  pieSeries.ticks.template.disabled = true;
-
   return chart;
 }
 
@@ -612,29 +583,27 @@ function getAgeData(cases) {
     if (!subject) break;
 
     age = subject["age"];
-    if (age <= 15){
-        ageGroup = '0-15';
-      } else if (age > 15 && age <= 30 ){
-        ageGroup = '15-30';
-      } else if (age > 30 && age <= 45 ){
-        ageGroup = '30-45';
-      } else if (age > 45 && age <= 60 ){
-        ageGroup = '45-60';
-      } else if (age > 60 && age <= 75 ){
-        ageGroup = '45-75';
-      } else if (age > 75 ){
-        ageGroup = '75+';
-      }
+    if (age <= 15) {
+      ageGroup = "0-15";
+    } else if (age > 15 && age <= 30) {
+      ageGroup = "15-30";
+    } else if (age > 30 && age <= 45) {
+      ageGroup = "30-45";
+    } else if (age > 45 && age <= 60) {
+      ageGroup = "45-60";
+    } else if (age > 60 && age <= 75) {
+      ageGroup = "45-75";
+    } else if (age > 75) {
+      ageGroup = "75+";
     }
 
-    if (age) {
-      if (ageCount[age] > 0) {
-        ageCount[age]++;
-      } else {
-        ageCount[age] = 1;
-      }
+    if (ageCount[ageGroup] > 0) {
+      ageCount[ageGroup]++;
+    } else {
+      ageCount[ageGroup] = 1;
     }
   }
+
   let ageStats = [];
   Object.entries(ageCount).forEach(([ageGroup, count]) => {
     ageStats.push({
