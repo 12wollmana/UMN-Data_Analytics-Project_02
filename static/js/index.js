@@ -376,7 +376,7 @@ function hideSexPieChartCard() {
 /**
  * Hides the pie chart card on sex.
  */
-function hideSexAgeChartCard() {
+function hideAgeChartCard() {
   let element = elements.divChartColAge;
   hideElements(element);
 }
@@ -627,6 +627,14 @@ function getAgeData(cases) {
       }
     }
 
+    if (age) {
+      if (ageCount[age] > 0) {
+        ageCount[age]++;
+      } else {
+        ageCount[age] = 1;
+      }
+    }
+  }
   let ageStats = [];
   Object.entries(ageCount).forEach(([ageGroup, count]) => {
     ageStats.push({
