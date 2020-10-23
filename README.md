@@ -1,15 +1,19 @@
 # Use of Police Force in Minneapolis
+
 <em>Aaron Wollman, Kelsey Richardson Blackwell, Will Huang, Mark Erickson</em>
 
 {Project Description}
 
-
 ## Project Proposal
+
 [Link to Project Proposal](https://docs.google.com/document/d/1S8f17_1JH-xNafa9AJuODPuJU724BTAQOyuVbggtQM4/)
 
 ## How to Run
+
 ### Configuration Files
+
 #### Javascript
+
 <ol>
   <li>
     Navigate to static > js.
@@ -26,6 +30,7 @@
 </ol>
 
 #### Python
+
 <ol>
   <li> 
     Make a copy of <strong>config.template.py</strong> in the root directory of this project. (UMN-Data_Analytics-Project_02)
@@ -39,10 +44,12 @@
 </ol>
 
 ### Setup Database
+
 For the database, this project uses a PostgresSQL database for storing police force data.
 This database needs to be created and populated by following the steps below.
 
 #### Create Schema
+
 <ol>
   <li>
     Open an instance of pgAdmin.
@@ -78,7 +85,9 @@ Here is what the database should look like:
 If something goes wrong and you need to redo these instructions, make sure to run <strong>database/queries/delete.sql</strong> before the above instructions so that the tables are cleared and deleted.
 
 ### Populate Database
+
 #### Utilize Jupyter Notebook Environment to do ETL process.
+
 <ol>
   <li>
     Run a <strong>Command Prompt</strong> (for windows) or <strong>Terminal</strong> (for mac).
@@ -96,10 +105,11 @@ If something goes wrong and you need to redo these instructions, make sure to ru
     Hit the dobule arrow <strong>restrat the kernel, then re-run the whole notebook (with dialog)</strong> and click <strong> "Restart and Run All Cells"</strong> to process the whole ETL process.
   </li>
   The last dialog should show something like this if the ETL process has been run successfully:<br>
-  <img width=300px height=300px src="database/uml/etl.png">
+  <img src="screenshots/etl.png" alt="ETL screenshot">
 </ol>
 
-#### Double Check If The Dataset Imported Successfully 
+#### Double Check If The Dataset Imported Successfully
+
 <ol>
   <li>
     Open an instance of pgAdmin.
@@ -113,7 +123,9 @@ If something goes wrong and you need to redo these instructions, make sure to ru
 </ol>
 
 ### Setup Web Server
+
 #### Utilize Flask as Web Server
+
 <ol>
   <li>
     Run a <strong>Command Prompt</strong> (for windows) or <strong>Terminal</strong> (for mac).
@@ -127,20 +139,22 @@ If something goes wrong and you need to redo these instructions, make sure to ru
   <li>
     Run <strong>python app.py</strong> as the command. It will shows up a link that hold the web server.
     <br>The result should look like this:<br>
-    <img width=500px height=300px src="database/uml/flask.png">
+    <img src="screenshots/flask.png" alt="Flask screenshot">
   </li>
 </ol>
 
 ### Browsing the Webpage
+
 <ol>  
   <li>
     Open a browser and enter the link: <strong>http://127.0.0.1:5000/</strong> to visit the webpage.
   </li>
 </ol>
 
-
 ## JSON API Documentation
+
 ### API Version
+
 <ol>
   <li>
     Visit the link: <storng>http://127.0.0.1:5000/api</strong> to view the API Version and Update History.
@@ -151,7 +165,9 @@ If something goes wrong and you need to redo these instructions, make sure to ru
 </ol>
 
 ### API Document
+
 #### Four perspectives are provided via this API
+
 <ol>
   <li>
     City:<br>
@@ -187,7 +203,9 @@ If something goes wrong and you need to redo these instructions, make sure to ru
 </ol>
 
 ### The Visualizations
+
 #### Apply a year to view the visualizaitons
+
 <ol>
   <li>
     Select a year from the bottom right dropdown list and click <strong>Apply</strong>.
@@ -254,8 +272,8 @@ If something goes wrong and you need to redo these instructions, make sure to ru
     </ul>
   </li>
 
-
 </ol>
 
 ## Sources
+
 Police force data from [Open Minneapolis](https://opendata.minneapolismn.gov/datasets/police-use-of-force).
