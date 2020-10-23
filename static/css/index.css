@@ -76,3 +76,7 @@ main {
   visibility: hidden;
   opacity: 0;
 }
+
+.popup__content--value{
+  text-transform: capitalize;
+}
