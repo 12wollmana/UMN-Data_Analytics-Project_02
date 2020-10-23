@@ -2,21 +2,20 @@
 # IMPORTS
 ########################################
 
-from sqlalchemy import exc
 from config import username, password
 
 from flask import Flask, jsonify, render_template, abort
 
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine;
+from sqlalchemy import create_engine
 
 ########################################
 # SETUP APPLICATION
 ########################################
 
 app = Flask(__name__)
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0 # Prevent caching
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0  # Prevent caching
 
 engine = create_engine(
     f"postgresql://{username}:{password}@localhost:5432/police_force")
@@ -35,14 +34,14 @@ routes = {
     "home": "/",
     "api_versions": "/api",
     "api_docs": "/api/<version>",
-    "api_docs_year" : "/api/<version>/year",
-    "api_docs_city" : "/api/<version>/city",
-    "api_docs_precinct" : "/api/<version>/precinct",
-    "api_docs_neighborhood" : "/api/<version>/neighborhood",
-    "api_year" : "/api/<version>/year/<year>",
-    "api_city" : "/api/<version>/city/<cityID>",
-    "api_precinct" : "/api/<version>/precinct/<precinctID>",
-    "api_neighborhood" : "/api/<version>/neighborhood/<neighborhoodID>"
+    "api_docs_year": "/api/<version>/year",
+    "api_docs_city": "/api/<version>/city",
+    "api_docs_precinct": "/api/<version>/precinct",
+    "api_docs_neighborhood": "/api/<version>/neighborhood",
+    "api_year": "/api/<version>/year/<year>",
+    "api_city": "/api/<version>/city/<cityID>",
+    "api_precinct": "/api/<version>/precinct/<precinctID>",
+    "api_neighborhood": "/api/<version>/neighborhood/<neighborhoodID>"
 }
 
 templates = {
@@ -57,7 +56,7 @@ version_infos = [
         "url": "/api/v1.0",
         "documentation":
             {
-                "/api/v1.0/year/" : "Gets a list of available years.",
+                "/api/v1.0/year/": "Gets a list of available years.",
                 "/api/v1.0/year/<year>": [
                     {
                         "case": {
@@ -68,8 +67,8 @@ version_infos = [
                             "date": "The date of the case.",
                             "year": "The year of the case.",
                             "month": "The month of the case.",
-                            "day" : "The day of the case.",
-                            "hour" : "The hour of the case",
+                            "day": "The day of the case.",
+                            "hour": "The hour of the case",
                             "latitude": "The latitude for where the case occured.",
                             "longitude": "The longitude for where the case occured.",
                             "city": {
@@ -166,9 +165,9 @@ def api_versions():
         The HTML to show.
     """
     return render_template(
-        templates["api_versions"], 
+        templates["api_versions"],
         versions=version_infos
-        )
+    )
 
 
 @app.route(routes["api_docs"])
@@ -225,6 +224,7 @@ def api_docs_year(version):
 
     return jsonify(available_years)
 
+
 @app.route(routes["api_year"])
 def api_year(version, year):
     """
@@ -255,7 +255,8 @@ def api_year(version, year):
     else:
         abort(404, "API version is not available.")
 
-    return jsonify(year_data);
+    return jsonify(year_data)
+
 
 @app.route(routes["api_docs_city"])
 def api_docs_city(version):
@@ -284,7 +285,7 @@ def api_docs_city(version):
     else:
         abort(404, "API version is not available.")
 
-    return jsonify(available_cities);
+    return jsonify(available_cities)
 
 
 @app.route(routes["api_docs_precinct"])
@@ -314,7 +315,8 @@ def api_docs_precinct(version):
     else:
         abort(404, "API version is not available.")
 
-    return jsonify(available_precincts);
+    return jsonify(available_precincts)
+
 
 @app.route(routes["api_docs_neighborhood"])
 def api_docs_neighborhood(version):
@@ -343,7 +345,8 @@ def api_docs_neighborhood(version):
     else:
         abort(404, "API version is not available.")
 
-    return jsonify(available_neighborhoods);
+    return jsonify(available_neighborhoods)
+
 
 @app.route(routes["api_city"])
 def api_city(version, cityID):
@@ -375,7 +378,7 @@ def api_city(version, cityID):
     else:
         abort(404, "API version is not available.")
 
-    return jsonify(city_summary);
+    return jsonify(city_summary)
 
 
 @app.route(routes["api_precinct"])
@@ -408,7 +411,8 @@ def api_precinct(version, precinctID):
     else:
         abort(404, "API version is not available.")
 
-    return jsonify(precinct_summary);
+    return jsonify(precinct_summary)
+
 
 @app.route(routes["api_neighborhood"])
 def api_neighborhood(version, neighborhoodID):
@@ -435,7 +439,7 @@ def api_neighborhood(version, neighborhoodID):
         session = Session(engine)
         try:
             neighborhood_summary = load_neighborhood_summary(
-                session, 
+                session,
                 neighborhoodID
             )
         finally:
@@ -443,11 +447,12 @@ def api_neighborhood(version, neighborhoodID):
     else:
         abort(404, "API version is not available.")
 
-    return jsonify(neighborhood_summary);
+    return jsonify(neighborhood_summary)
 
 ########################################
 # HELPER FUNCTIONS
 ########################################
+
 
 def get_version_info(api_version):
     """
@@ -467,7 +472,8 @@ def get_version_info(api_version):
     for version_info in version_infos:
         if(version_info["name"] == api_version):
             selected_version_info = version_info
-    return selected_version_info;
+    return selected_version_info
+
 
 def load_available_cities(session):
     """
@@ -500,8 +506,9 @@ def load_available_cities(session):
         )
 
     return {
-        "availableCities" : city_ids
+        "availableCities": city_ids
     }
+
 
 def load_available_precincts(session):
     """
@@ -534,8 +541,9 @@ def load_available_precincts(session):
         )
 
     return {
-        "availablePrecincts" : precinct_ids
+        "availablePrecincts": precinct_ids
     }
+
 
 def load_available_neighborhoods(session):
     """
@@ -568,8 +576,9 @@ def load_available_neighborhoods(session):
         )
 
     return {
-        "availableNeighborhoods" : neighborhood_ids
+        "availableNeighborhoods": neighborhood_ids
     }
+
 
 def load_available_years(session):
     """
@@ -596,7 +605,8 @@ def load_available_years(session):
         years.append(result.year)
     years.sort()
 
-    return {"availableYears" : years}
+    return {"availableYears": years}
+
 
 def load_cases_by_year(session, year):
     """
@@ -633,9 +643,10 @@ def load_cases_by_year(session, year):
         case_table.precinct_id,
         case_table.neighborhood_id,
         case_table.police_force_id
-        ).filter(case_table.year == year)
+    ).filter(case_table.year == year)
 
     return cases_by_year_results
+
 
 def load_city_by_id(session, city_id):
     """
@@ -665,9 +676,10 @@ def load_city_by_id(session, city_id):
     city_result = results[0]
 
     return {
-        "id" : city_result.city_id,
-        "name" : city_result.city_name
+        "id": city_result.city_id,
+        "name": city_result.city_name
     }
+
 
 def load_precinct_by_id(session, precinct_id):
     """
@@ -688,7 +700,7 @@ def load_precinct_by_id(session, precinct_id):
     """
     precinct_table = database_tables.precinct
 
-    results =  session.query(
+    results = session.query(
         precinct_table.precinct_id,
         precinct_table.precinct_name
     ).filter(
@@ -697,9 +709,10 @@ def load_precinct_by_id(session, precinct_id):
     precinct_result = results[0]
 
     return {
-        "id" : precinct_result.precinct_id,
-        "name" : precinct_result.precinct_name
+        "id": precinct_result.precinct_id,
+        "name": precinct_result.precinct_name
     }
+
 
 def load_neighborhood_by_id(session, neighborhood_id):
     """
@@ -729,9 +742,10 @@ def load_neighborhood_by_id(session, neighborhood_id):
     neighborhood_result = results[0]
 
     return {
-        "id" : neighborhood_result.neighborhood_id,
-        "name" : neighborhood_result.neighborhood_name
+        "id": neighborhood_result.neighborhood_id,
+        "name": neighborhood_result.neighborhood_name
     }
+
 
 def load_police_force_by_id(session, force_id):
     """
@@ -768,7 +782,7 @@ def load_police_force_by_id(session, force_id):
     force_category_id = force_result.force_category_id
     try:
         force_category = load_force_category_by_id(
-            session, 
+            session,
             force_category_id
         )
     except IndexError:
@@ -791,12 +805,13 @@ def load_police_force_by_id(session, force_id):
                 f"Unable to load subject with id {subject_id} for force id {force_id}"
             )
     return {
-        "forceNumber" : force_result.force_number,
-        "forceReportNumber" : force_result.force_report_number,
-        "forceCategory" : force_category["category"],
-        "forceAction" : force_result.force_action,
-        "subject" : subject
+        "forceNumber": force_result.force_number,
+        "forceReportNumber": force_result.force_report_number,
+        "forceCategory": force_category["category"],
+        "forceAction": force_result.force_action,
+        "subject": subject
     }
+
 
 def load_force_category_by_id(session, force_category_id):
     """
@@ -827,9 +842,10 @@ def load_force_category_by_id(session, force_category_id):
     force_category_result = results[0]
 
     return {
-        "id" : force_category_result.force_category_id,
-        "category" : force_category_result.category
+        "id": force_category_result.force_category_id,
+        "category": force_category_result.category
     }
+
 
 def load_subject_by_id(session, subject_id):
     """
@@ -865,14 +881,15 @@ def load_subject_by_id(session, subject_id):
     subject_result = results[0]
 
     return {
-        "race" : subject_result.race,
-        "sex" : subject_result.sex,
-        "age" : subject_result.age,
-        "wasInjured" : subject_result.has_injury,
-        "role" : subject_result.role,
-        "role_number" : subject_result.role_number,
-        "resistance" : subject_result.resistance
+        "race": subject_result.race,
+        "sex": subject_result.sex,
+        "age": subject_result.age,
+        "wasInjured": subject_result.has_injury,
+        "role": subject_result.role,
+        "role_number": subject_result.role_number,
+        "resistance": subject_result.resistance
     }
+
 
 def load_year_data(session, year):
     """
@@ -892,10 +909,10 @@ def load_year_data(session, year):
     Dict
         All case information.
     """
-    all_year_data = [];
+    all_year_data = []
 
     cases_by_year_results = load_cases_by_year(session, year)
-    
+
     for case_result in cases_by_year_results:
         case_number = case_result.case_number
 
@@ -904,33 +921,33 @@ def load_year_data(session, year):
         if(city_id):
             try:
                 city_data = load_city_by_id(
-                    session, 
+                    session,
                     city_id)
             except IndexError:
-                abort(404, 
-                f"Unable to load city with id {city_id} for case {case_number}.")
+                abort(404,
+                      f"Unable to load city with id {city_id} for case {case_number}.")
 
         precinct_id = case_result.precinct_id
         precinct_data = {}
         if(precinct_id):
             try:
                 precinct_data = load_precinct_by_id(
-                    session, 
+                    session,
                     precinct_id)
             except IndexError:
-                abort(404, 
-                f"Unable to load precinct with id {precinct_id} for case {case_number}.")
+                abort(404,
+                      f"Unable to load precinct with id {precinct_id} for case {case_number}.")
 
         neighborhood_id = case_result.neighborhood_id
         neighborhood_data = {}
         if(neighborhood_id):
             try:
                 neighborhood_data = load_neighborhood_by_id(
-                    session, 
+                    session,
                     neighborhood_id)
             except IndexError:
-                abort(404, 
-                f"Unable to load neighborhood with id {neighborhood_id} for case {case_number}.")
+                abort(404,
+                      f"Unable to load neighborhood with id {neighborhood_id} for case {case_number}.")
 
         force_id = case_result.police_force_id
         force_data = {}
@@ -946,28 +963,28 @@ def load_year_data(session, year):
                     f"Unable to load police force with id {force_id} for case {case_number}."
                 )
 
-
         case_data = {
-            "caseNumber" : case_result.case_number,
-            "isCallTo911" : case_result.is_911_call,
-            "problem" : case_result.problem,
-            "primaryOffense" : case_result.primary_offense,
-            "date" : case_result.date,
-            "year" : case_result.year,
-            "month" : case_result.month,
-            "day" : case_result.day,
-            "hour" : case_result.hour,
-            "latitude" : case_result.latitude,
-            "longitude" : case_result.longitude,
-            "city" : city_data,
-            "precinct" : precinct_data,
-            "neighborhood" : neighborhood_data,
-            "force" : force_data
+            "caseNumber": case_result.case_number,
+            "isCallTo911": case_result.is_911_call,
+            "problem": case_result.problem,
+            "primaryOffense": case_result.primary_offense,
+            "date": case_result.date,
+            "year": case_result.year,
+            "month": case_result.month,
+            "day": case_result.day,
+            "hour": case_result.hour,
+            "latitude": case_result.latitude,
+            "longitude": case_result.longitude,
+            "city": city_data,
+            "precinct": precinct_data,
+            "neighborhood": neighborhood_data,
+            "force": force_data
         }
 
-        all_year_data.append({"case" : case_data})
-    
-    return all_year_data;
+        all_year_data.append({"case": case_data})
+
+    return all_year_data
+
 
 def load_city_summary(session, city_id):
     """
@@ -993,22 +1010,23 @@ def load_city_summary(session, city_id):
             city_id
         )
     except IndexError:
-            abort(404, 
-            f"Unable to load city with id {city_id}.")
-   
+        abort(404,
+              f"Unable to load city with id {city_id}.")
+
     summary_data = {}
-    try: 
+    try:
         summary_data = load_city_summary_by_id(
             session,
             city_id
         )
     except IndexError:
-            abort(404, 
-            f"Unable to load city summary with id {city_id}.")
+        abort(404,
+              f"Unable to load city summary with id {city_id}.")
     return {
-        "name" : city_data["name"],
+        "name": city_data["name"],
         "summary": summary_data
     }
+
 
 def load_city_summary_by_id(session, city_id):
     """
@@ -1035,8 +1053,9 @@ def load_city_summary_by_id(session, city_id):
     ).filter(
         city_summary_table.city_id == city_id
     )
-    
+
     return format_summary_results(results)
+
 
 def load_precinct_summary(session, precinct_id):
     """
@@ -1062,22 +1081,23 @@ def load_precinct_summary(session, precinct_id):
             precinct_id
         )
     except IndexError:
-            abort(404, 
-            f"Unable to load precinct with id {precinct_id}.")
-   
+        abort(404,
+              f"Unable to load precinct with id {precinct_id}.")
+
     summary_data = {}
-    try: 
+    try:
         summary_data = load_precinct_summary_by_id(
             session,
             precinct_id
         )
     except IndexError:
-            abort(404, 
-            f"Unable to load precinct summary with id {precinct_id}.")
+        abort(404,
+              f"Unable to load precinct summary with id {precinct_id}.")
     return {
-        "name" : precinct_data["name"],
+        "name": precinct_data["name"],
         "summary": summary_data
     }
+
 
 def load_precinct_summary_by_id(session, precinct_id):
     """
@@ -1104,7 +1124,7 @@ def load_precinct_summary_by_id(session, precinct_id):
     ).filter(
         precinct_summary_table.precinct_id == precinct_id
     )
-    
+
     return format_summary_results(results)
 
 
@@ -1132,22 +1152,23 @@ def load_neighborhood_summary(session, neighborhood_id):
             neighborhood_id
         )
     except IndexError:
-            abort(404, 
-            f"Unable to load neighborhood with id {neighborhood_id}.")
-   
+        abort(404,
+              f"Unable to load neighborhood with id {neighborhood_id}.")
+
     summary_data = {}
-    try: 
+    try:
         summary_data = load_neighborhood_summary_by_id(
             session,
             neighborhood_id
         )
     except IndexError:
-            abort(404, 
-            f"Unable to load neighborhood summary with id {neighborhood_id}.")
+        abort(404,
+              f"Unable to load neighborhood summary with id {neighborhood_id}.")
     return {
-        "name" : neighborhood_data["name"],
+        "name": neighborhood_data["name"],
         "summary": summary_data
     }
+
 
 def load_neighborhood_summary_by_id(session, neighborhood_id):
     """
@@ -1174,8 +1195,9 @@ def load_neighborhood_summary_by_id(session, neighborhood_id):
     ).filter(
         neighborhood_summary_table.neighborhood_id == neighborhood_id
     )
-    
+
     return format_summary_results(results)
+
 
 def format_summary_results(summary_results):
     """
@@ -1195,12 +1217,13 @@ def format_summary_results(summary_results):
     for summary_result in summary_results:
         summary.append(
             {
-                "year" : summary_result.year,
-                "totalCalls" : summary_result.total_calls
+                "year": summary_result.year,
+                "totalCalls": summary_result.total_calls
             }
         )
-    
+
     return summary
+
 
 ########################################
 # RUN FLASK

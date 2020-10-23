@@ -572,6 +572,7 @@ function getRaceData(cases) {
       count: count,
     });
   });
+  raceStats = raceStats.sort((a, b) => b.count - a.count);
   return raceStats;
 }
 
@@ -629,6 +630,7 @@ function getSexData(cases) {
       count: count,
     });
   });
+  sexStats = sexStats.sort((a, b) => b.count - a.count);
   return sexStats;
 }
 
@@ -700,5 +702,6 @@ function getAgeData(cases) {
       count: count,
     });
   });
+  ageStats = ageStats.sort((a, b) => a.ageGroup.localeCompare(b.ageGroup));
   return ageStats;
 }

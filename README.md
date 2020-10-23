@@ -27,6 +27,15 @@
 
 #### Python
 <ol>
+  <li> 
+    Make a copy of <strong>config.template.py</strong> in the root directory of this project. (UMN-Data_Analytics-Project_02)
+  </li>
+  <li>
+    Rename this file to <strong>config.py</strong>.
+  </li>
+  <li>
+	  Edit the file, replacing the variables with the proper values.
+	</li>
 </ol>
 
 ### Setup Database
@@ -68,8 +77,185 @@ Here is what the database should look like:
 
 If something goes wrong and you need to redo these instructions, make sure to run <strong>database/queries/delete.sql</strong> before the above instructions so that the tables are cleared and deleted.
 
-#### Populate Database
+### Populate Database
+#### Utilize Jupyter Notebook Environment to do ETL process.
+<ol>
+  <li>
+    Run a <strong>Command Prompt</strong> (for windows) or <strong>Terminal</strong> (for mac).
+  </li>
+  <li>
+    Run <strong>source active NewPythonData</strong> as the command.
+  </li>
+  <li>
+     Change directory to <strong>./database/etl</strong> and run <strong>jupyter notebook</strong> as the command.
+  </li>
+  <li>
+    Run <strong>etl.ipynb</strong> under jupyter notebook environemnt.
+  </li>
+  <li>
+    Hit the dobule arrow <strong>restrat the kernel, then re-run the whole notebook (with dialog)</strong> and click <strong> "Restart and Run All Cells"</strong> to process the whole ETL process.
+  </li>
+  The last dialog should show something like this if the ETL process has been run successfully:<br>
+  <img width=300px height=300px src="database/uml/etl.png">
+</ol>
 
+#### Double Check If The Dataset Imported Successfully 
+<ol>
+  <li>
+    Open an instance of pgAdmin.
+  </li>
+  <li>
+    Open a query under <strong>police_force</strong> database.
+  </li>
+  <li>
+    Run <strong>database/queries/check.sql</strong> to check the tables within the police_force.
+  </li>
+</ol>
+
+### Setup Web Server
+#### Utilize Flask as Web Server
+<ol>
+  <li>
+    Run a <strong>Command Prompt</strong> (for windows) or <strong>Terminal</strong> (for mac).
+  </li>
+  <li>
+    Run <strong>source active NewPythonData</strong> as the command.
+  </li>
+  <li>
+    Change directory to <strong>root directory of this project</strong>.
+  </li>
+  <li>
+    Run <strong>python app.py</strong> as the command. It will shows up a link that hold the web server.
+    <br>The result should look like this:<br>
+    <img width=500px height=300px src="database/uml/flask.png">
+  </li>
+</ol>
+
+### Browsing the Webpage
+<ol>  
+  <li>
+    Open a browser and enter the link: <strong>http://127.0.0.1:5000/</strong> to visit the webpage.
+  </li>
+</ol>
+
+
+## JSON API Documentation
+### API Version
+<ol>
+  <li>
+    Visit the link: <storng>http://127.0.0.1:5000/api</strong> to view the API Version and Update History.
+  </li>
+  <li>
+    Click the <strong>most current</strong> API version to see the API document.
+  </li>
+</ol>
+
+### API Document
+#### Four perspectives are provided via this API
+<ol>
+  <li>
+    City:<br>
+    <ul>
+      <li>A list of <strong>City and City_ID</strong> in the database.<br> http://127.0.0.1:5000/api/api_version/city/</li>
+      <li>A list of <strong> Yearly Total Calls of Speicfic City</strong>.<br>http://127.0.0.1:5000/api_version/v1.0/city/city_id </li>
+    </ul>
+  </li>
+
+  <li>
+    Neighborhood:<br>
+    <ul>
+      <li>A list of <strong>Neighborhood and Neighborhood_ID</strong> in the database.<br> http://127.0.0.1:5000/api/api_version/neighborhood/</li>
+      <li>A list of <strong> Yearly Total Calls of Speicfic Neighborhood</strong>.<br>http://127.0.0.1:5000/api/api_version/neighborhood/neighborhood_id </li>
+    </ul>
+  </li>
+
+  <li>
+    Precinct:<br>
+    <ul>
+      <li>A list of <strong>Precinct and Precinct_ID</strong> in the database.<br> http://127.0.0.1:5000/api/api_version/precinct/</li>
+      <li>A list of <strong> Yearly Total Calls of Speicfic Precinct</strong>.<br>http://127.0.0.1:5000/api/api_version/precinct/precinct_id </li>
+    </ul>
+  </li>
+
+  <li>
+    Year:<br>
+    <ul>
+      <li>A list of <strong>Years</strong> that is available in the database.<br> http://127.0.0.1:5000/api/api_version/year/</li>
+      <li>A list of <strong> Detail Information of Each Case in Specific Year</strong>.<br>http://127.0.0.1:5000/api/api_version/year/specific_year </li>
+    </ul>
+  </li>
+</ol>
+
+### The Visualizations
+#### Apply a year to view the visualizaitons
+<ol>
+  <li>
+    Select a year from the bottom right dropdown list and click <strong>Apply</strong>.
+  </li>
+</ol>
+
+#### There are five differnet graphs presenting in the webpage once you applied a year.
+
+<ol>
+  <li>
+    City Map:<br>
+    <ul>
+      <li>
+        Showing the numbers of cases happened in an area.   You can <strong>zoom in and out</strong> to change the scope of the view.
+      </li>
+      <li>
+        <strong>Click the mark</strong> to see the detail information of each case.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    Use of Force by Subject's Race Pie Chart:<br>
+    <ul>
+      <li>
+        Illustrating the numerical proportion of each race in total cases in a specific year.
+      </li>
+      <li>
+        <strong>Click the name</strong> of race to exclude or include a certain race into account.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    Use of Force by Subject's Sex Pie Chart: <br>
+    <ul>
+      <li>
+        Illustrating the numerical proportion of each sex in total cases in a specific year.
+      </li>
+      <li>
+        <strong>Click the name</strong> of sex to exclude or include a certain race into account.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    Use of Force by Subject's Age Group Pie Chart: <br>
+    <ul>
+      <li>
+        Illustrating the numerical proportion of each age group in total cases in a specific year.
+      </li>
+      <li>
+        <strong>Click the name</strong> of age group to exclude or include a certain race into account.
+      </li>
+    </ul>
+  </li>
+
+  <li>
+      Use of Force by Police's Force Category: <br>
+    <ul>
+      <li>
+        Illustrating the numerical proportion of each force category in total cases in a specific year.
+      </li>
+    </ul>
+  </li>
+
+
+</ol>
 
 ## Sources
 Police force data from [Open Minneapolis](https://opendata.minneapolismn.gov/datasets/police-use-of-force).
