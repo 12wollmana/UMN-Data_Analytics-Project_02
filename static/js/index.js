@@ -29,6 +29,8 @@ const elements = {
   divChartColRace: d3.select(".col__chart-race"),
   divChartColSex: d3.select(".col__chart-sex"),
   divChartColAge: d3.select(".col__chart-age"),
+  colError: d3.select(".col__error"),
+  divErrorMessage: d3.select(".alert-danger"),
 };
 
 /**
@@ -93,6 +95,7 @@ async function onApplySettings() {
   d3.event.preventDefault();
 
   await showLoading();
+  hideError();
   hideChartRows();
   clearData();
 
@@ -106,9 +109,35 @@ async function onApplySettings() {
       state.year = selectedYear;
       showChartRows();
     }
+  } catch (error) {
+    showError("Could not apply Settings.");
+    throw error;
   } finally {
     hideLoading();
   }
+}
+/**
+ * Shows an error on the page with a message.
+ * @param {string} message
+ * Message to show.
+ */
+function showError(message) {
+  const columnElement = elements.colError;
+  showElements(columnElement);
+
+  const messageElement = elements.divErrorMessage;
+  messageElement.text(message);
+}
+
+/**
+ * Hides any error message on the page.
+ */
+function hideError() {
+  const columnElement = elements.colError;
+  hideElements(columnElement);
+
+  const messageElement = elements.divErrorMessage;
+  messageElement.text("");
 }
 
 /**
