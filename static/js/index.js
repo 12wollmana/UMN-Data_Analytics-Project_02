@@ -96,7 +96,6 @@ async function onApplySettings() {
   try {
     const selectElement = elements.selectYear;
     const selectedOption = selectElement.property("value");
-    console.log(selectedOption);
 
     if (selectedOption != "None") {
       const selectedYear = selectedOption;
@@ -294,6 +293,7 @@ async function loadAvailableYears() {
 function generateAmCharts(cases) {
   am4core.useTheme(am4themes_animated);
 
+  // Race Pie Chart
   try {
     let racePieChart = generateRacePieChart(cases);
     showRacePieChartCard();
