@@ -190,11 +190,12 @@ If something goes wrong and you need to redo these instructions, make sure to ru
 #### Apply a year to view the visualizaitons
 <ol>
   <li>
-    Select a year from the bottom right dropdown list and click <strong>Apply</storng>.
+    Select a year from the bottom right dropdown list and click <strong>Apply</strong>.
   </li>
 </ol>
 
-##### There are five differnet graphs presenting in the webpage once you applied a year.
+#### There are five differnet graphs presenting in the webpage once you applied a year.
+
 <ol>
   <li>
     City Map:<br>
@@ -205,27 +206,56 @@ If something goes wrong and you need to redo these instructions, make sure to ru
       <li>
         <strong>Click the mark</strong> to see the detail information of each case.
       </li>
+    </ul>
   </li>
 
   <li>
-    Use of Force by Race Pie Chart:<br>
+    Use of Force by Subject's Race Pie Chart:<br>
     <ul>
-      <li>Illustrating the subjects by races.
+      <li>
+        Illustrating the numerical proportion of each race in total cases in a specific year.
+      </li>
+      <li>
+        <strong>Click the name</strong> of race to exclude or include a certain race into account.
       </li>
     </ul>
   </li>
 
   <li>
+    Use of Force by Subject's Sex Pie Chart: <br>
+    <ul>
+      <li>
+        Illustrating the numerical proportion of each sex in total cases in a specific year.
+      </li>
+      <li>
+        <strong>Click the name</strong> of sex to exclude or include a certain race into account.
+      </li>
+    </ul>
   </li>
 
   <li>
+    Use of Force by Subject's Age Group Pie Chart: <br>
+    <ul>
+      <li>
+        Illustrating the numerical proportion of each age group in total cases in a specific year.
+      </li>
+      <li>
+        <strong>Click the name</strong> of age group to exclude or include a certain race into account.
+      </li>
+    </ul>
   </li>
 
   <li>
+      Use of Force by Police's Force Category: <br>
+    <ul>
+      <li>
+        Illustrating the numerical proportion of each force category in total cases in a specific year.
+      </li>
+    </ul>
   </li>
 
 
-<ol>
+</ol>
 
 ## Sources
 Police force data from [Open Minneapolis](https://opendata.minneapolismn.gov/datasets/police-use-of-force).
