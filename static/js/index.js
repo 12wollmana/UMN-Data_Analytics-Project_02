@@ -157,7 +157,7 @@ async function updateCasesByYear(year) {
   caseMarkers.addTo(state.map);
   state.caseMarkers = caseMarkers;
 
-  am4core.ready(() => generateAmCharts(allCasesByYear, year));
+  am4core.ready(() => generateAmCharts(allCasesByYear));
 }
 
 /**
