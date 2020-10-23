@@ -20,12 +20,14 @@ const elements = {
   divMap: d3.select("#mapid"),
   divPieChartRace: d3.select(".chart--race"),
   divPieChartSex: d3.select(".chart--sex"),
+  divPieChartAge: d3.select(".chart--age"),
   divChartBar: d3.select(".chart--bar"),
   selectYear: d3.select("#selectYear"),
   buttonApplySettings: d3.select("#buttonApplySettings"),
   divChartRowList: d3.selectAll(".row__charts"),
   divChartColRace: d3.select(".col__chart-race"),
   divChartColSex: d3.select(".col__chart-sex"),
+  divChartColAge: d3.select(".col__chart-age"),
 };
 
 /**
@@ -317,6 +319,18 @@ function generateAmCharts(cases) {
       throw error;
     }
   }
+
+  try {
+    let agePieChart = generateAgePieChart(cases);
+    showAgePieChartCard();
+    state.pieCharts.push(agePieChart);
+  } catch (error) {
+    if (error instanceof NoDataError) {
+      hideAgePieChartCard();
+    } else {
+      throw error;
+    }
+  }
 }
 
 /**
@@ -336,6 +350,14 @@ function showSexPieChartCard() {
 }
 
 /**
+ * Shows the pie chart card on age.
+ */
+function showAgePieChartCard() {
+  let element = elements.divChartColAge;
+  showElements(element);
+}
+
+/**
  * Hides the pie chart card on race.
  */
 function hideRacePieChartCard() {
@@ -348,6 +370,14 @@ function hideRacePieChartCard() {
  */
 function hideSexPieChartCard() {
   let element = elements.divChartColSex;
+  hideElements(element);
+}
+
+/**
+ * Hides the pie chart card on sex.
+ */
+function hideSexAgeChartCard() {
+  let element = elements.divChartColAge;
   hideElements(element);
 }
 
@@ -512,4 +542,97 @@ function getSexData(cases) {
     });
   });
   return sexStats;
+}
+
+/**
+ * Creates a pie chart using amCharts.
+ * This pie chart displays the subject's age.
+ *
+ * @param {any[]} cases
+ * The cases to generate the chart from.
+ */
+function generateAgePieChart(cases) {
+  const chartElement = elements.divPieChartAge;
+
+  const ageData = getAgeData(cases);
+  if (ageData.length > 0) {
+    var chart = generateAmPieChart(chartElement, "count", "ageGroup");
+    chart.data = getAgeData(cases);
+  } else {
+    throw new NoDataError("No age data.");
+  }
+  return chart;
+}
+
+/**
+ * Generates a amChart pie chart.
+ *
+ * @param {any} parentElement
+ * Parent HTML element as a d3 object to append the chart to.
+ *
+ * @param {string} valueKey
+ * Key within the data to bind to the pie value.
+ *
+ * @param {string} categoryKey
+ * Key within the data to bind to the pie category.
+ */
+function generateAmPieChart(parentElement, valueKey, categoryKey) {
+  // Create chart instance
+  var chart = am4core.create(parentElement.node(), am4charts.PieChart);
+
+  chart.legend = new am4charts.Legend();
+  chart.legend.position = "right";
+  chart.legend.scrollable = true;
+
+  // Add and configure Series
+  var pieSeries = chart.series.push(new am4charts.PieSeries());
+  pieSeries.dataFields.value = valueKey;
+  pieSeries.dataFields.category = categoryKey;
+  pieSeries.labels.template.disabled = true;
+  pieSeries.ticks.template.disabled = true;
+
+  return chart;
+}
+
+/**
+ * Gets all the age data from a list of cases.
+ *
+ * @param {any[]} cases
+ * The cases to find the age data from.
+ */
+function getAgeData(cases) {
+  let ageCount = {};
+  for (let caseInfo of cases) {
+    const caseData = caseInfo["case"];
+
+    const force = caseData["force"];
+    if (!force) break;
+
+    const subject = force["subject"];
+    if (!subject) break;
+
+    age = subject["age"];
+    if (age <= 15){
+        ageGroup = '0-15';
+      } else if (age > 15 && age <= 30 ){
+        ageGroup = '15-30';
+      } else if (age > 30 && age <= 45 ){
+        ageGroup = '30-45';
+      } else if (age > 45 && age <= 60 ){
+        ageGroup = '45-60';
+      } else if (age > 60 && age <= 75 ){
+        ageGroup = '45-75';
+      } else if (age > 75 ){
+        ageGroup = '75+';
+      }
+    }
+
+  let ageStats = [];
+  Object.entries(ageCount).forEach(([ageGroup, count]) => {
+    ageStats.push({
+      ageGroup: ageGroup,
+      count: count,
+    });
+  });
+  return ageStats;
 }
