@@ -256,7 +256,7 @@ function createCaseClustersMarkers(cases) {
 
 /**
  * Creates a marker's popup for display in the map.
- * @param {any} currentCase 
+ * @param {any} currentCase
  * The current case node to display.
  */
 function createMarkerPopup(currentCase) {
@@ -273,10 +273,9 @@ function createMarkerPopup(currentCase) {
       </h5>
       `;
 
-
-  let date = nullLabel
-  if(month > 0 && day > 0 && year > 0){
-    date = `${month}/${day}/${year}`
+  let date = nullLabel;
+  if (month > 0 && day > 0 && year > 0) {
+    date = `${month}/${day}/${year}`;
   }
   popupHTML += createValueLabelHTML(date, "Date");
   popupHTML += createValueLabelHTML(formatHour(hour), "Hour");
@@ -313,11 +312,11 @@ function createMarkerPopup(currentCase) {
 
 /**
  * Creates a value-label pair in HTML format.
- * 
- * @param {string} value 
+ *
+ * @param {string} value
  * The value to display.
- * 
- * @param {string?} label 
+ *
+ * @param {string?} label
  * Optional, the label to display.
  */
 function createValueLabelHTML(value, label) {
@@ -335,12 +334,12 @@ function createValueLabelHTML(value, label) {
 
 /**
  * Formats an hour for display.
- * 
- * @param {int} hour 
+ *
+ * @param {int} hour
  * The hour to format.
  */
 function formatHour(hour) {
-  if(hour < 0) return nullLabel;
+  if (hour < 0) return nullLabel;
 
   let isPM = hour >= 12;
   let hourDisplay = hour % 12;
