@@ -1,6 +1,7 @@
 const serverBaseURL = "http://127.0.0.1:5000";
 const apiBaseURL = `${serverBaseURL}/api`;
 const apiCurrentVersion = "v1.0";
+const nullLabel = "Unknown";
 
 /**
  * Global variables for the state of the page.
@@ -242,25 +243,111 @@ function createCaseClustersMarkers(cases) {
 
     const longitude = currentCase.longitude;
     const latitude = currentCase.latitude;
-    const date = currentCase.date;
-    const problem = currentCase.problem;
 
     if (longitude && latitude) {
       const marker = L.marker([latitude, longitude]);
-      marker.bindPopup(
-        `
-        <h3>
-        ${problem}
-        </h3>
-        <hr>
-        ${date}
-        `
-      );
+      marker.bindPopup(createMarkerPopup(currentCase));
       markers.addLayer(marker);
     }
   });
 
   return markers;
+}
+
+/**
+ * Creates a marker's popup for display in the map.
+ * @param {any} currentCase
+ * The current case node to display.
+ */
+function createMarkerPopup(currentCase) {
+  const year = currentCase.year;
+  const month = currentCase.month;
+  const day = currentCase.day;
+  const hour = currentCase.hour;
+  const problem = currentCase.problem;
+  const caseNumber = currentCase.caseNumber;
+
+  let popupHTML = `
+      <h5>
+      Case #${caseNumber}
+      </h5>
+      `;
+
+  let date = nullLabel;
+  if (month > 0 && day > 0 && year > 0) {
+    date = `${month}/${day}/${year}`;
+  }
+  popupHTML += createValueLabelHTML(date, "Date");
+  popupHTML += createValueLabelHTML(formatHour(hour), "Hour");
+  popupHTML += createValueLabelHTML(problem, "Reported Problem");
+  popupHTML += createValueLabelHTML(currentCase.isCallTo911, "911 Call");
+
+  const force = currentCase["force"];
+  if (!force) {
+    return popupHTML;
+  }
+
+  popupHTML += `<hr><h6>Police Use of Force</h6>`;
+  popupHTML += createValueLabelHTML(force.forceAction, "Action");
+  popupHTML += createValueLabelHTML(force.forceCategory, "Category");
+
+  const subject = force["subject"];
+  if (!subject) {
+    return popupHTML;
+  }
+
+  popupHTML += `<hr><h6>Subject</h6>`;
+  popupHTML += createValueLabelHTML(subject.age, "Age");
+  popupHTML += createValueLabelHTML(subject.sex, "Sex");
+  popupHTML += createValueLabelHTML(subject.race, "Race");
+  popupHTML += createValueLabelHTML(
+    currentCase.primaryOffense,
+    "Primary Offense"
+  );
+  popupHTML += createValueLabelHTML(subject.resistance, "Resistance");
+  popupHTML += createValueLabelHTML(subject.wasInjured, "Injured");
+
+  return popupHTML;
+}
+
+/**
+ * Creates a value-label pair in HTML format.
+ *
+ * @param {string} value
+ * The value to display.
+ *
+ * @param {string?} label
+ * Optional, the label to display.
+ */
+function createValueLabelHTML(value, label) {
+  if (!value) value = nullLabel;
+
+  let popupHTML = "";
+  if (label) {
+    popupHTML += `${label}: `;
+  }
+  popupHTML += `<span class="popup__content--value">${value}</span>`;
+  popupHTML += "<br>";
+
+  return popupHTML;
+}
+
+/**
+ * Formats an hour for display.
+ *
+ * @param {int} hour
+ * The hour to format.
+ */
+function formatHour(hour) {
+  if (hour < 0) return nullLabel;
+
+  let isPM = hour >= 12;
+  let hourDisplay = hour % 12;
+  if (hourDisplay === 0) {
+    hourDisplay = 12;
+  }
+
+  return `${hourDisplay}${isPM ? "PM" : "AM"}`;
 }
 
 /**
@@ -583,7 +670,9 @@ function getAgeData(cases) {
     if (!subject) break;
 
     age = subject["age"];
-    if (age <= 15) {
+    if (age < 0) {
+      ageGroup = nullLabel;
+    } else if (age <= 15) {
       ageGroup = "0-15";
     } else if (age > 15 && age <= 30) {
       ageGroup = "15-30";
