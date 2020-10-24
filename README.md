@@ -17,13 +17,13 @@ This project looks at the use of police force within cases in Minneapolis.
     To begin, we designed a database schema on <strong>QuickDBD</strong> and created SQL queries to load tables in <strong>pgAdmin</strong>, which is where we stored the dataset.
   </li>
   <li>
-    We used a <strong>Jupyter Notebook</strong> environment for the ETL process, and used the <strong>SQLAlchemy </strong>libray to import the dataset into <strong>pgAdmin</strong>.
+    We used a <strong>Jupyter Notebook</strong> for the ETL process, and used <strong>SQLAlchemy</strong> to import the dataset into <strong>pgAdmin</strong>.
   </li>
   <li>
-    We used a <strong>Flask</strong> server to build the API function.
+    Next, we created a <strong>Flask</strong> server to build the API function.
   </li>
   <li>
-    From that point, we created our data visualizations. We used <strong>Leaflet</strong> to show the incidents in a map of Minneapolis with marker clusters displaying additional information. We found a new javasript library, <strong>amcharts javascript library</strong>, to generate interactive pie charts related to the subject's race, sex, and age. And we used <strong>Plotly</strong> to create a bar chart displaying the number of incidents.
+    From that point we were able to design our data visualizations. We used <strong>Leaflet</strong> to show the incidents in a map of Minneapolis with marker clusters displaying additional information. We found a new javasript library, <strong>amcharts javascript library</strong>, to generate interactive pie charts related to the subject's race, sex, and age. And we used <strong>Plotly</strong> to create a bar chart displaying the number of incidents.
   </li>
   <li>
     Lastly, we used <strong>Bootstrap</strong> to format the page, adding a drop-down box that allows you to pull the data by year.
