@@ -11,25 +11,22 @@ This project looks at the use of police force within cases in Minneapolis.
 ## Project Summary
 <ol>
   <li>
-    Create a <strong>dashboard</strong> for the <strong>Police Use Force Dataset</strong>, retrived from Open Minneapolis, to show a big picture of the subjects' features, and the force types polices tend to implement.
+    This project is a <strong>dashboard</strong> analyzing the Minneapolis' police use of force over the past 12 years. The <strong>Police Use Force Dataset</strong> is retrieved from [Link to opendataminneapolis](https://opendata.minneapolismn.gov/).
   </li>
   <li>
-    Design database schema on <strong>QuickDBD</strong> then run SQL queries on <strong>pgAdmin</strong> to create tables.
+    To being, we designed a database schema on <strong>QuickDBD</strong> and created SQL queries to load tables in <strong>pgAdmin</strong>, which is where we stored the dataset.
   </li>
   <li>
-    Utilize <strong>PostgreSQL</strong> as the backbone to store the dataset.
+    We used a <strong>Jupyter Notebook</strong> environment for the ETL process, and used the <strong>SQLAlchemy </strong>libray to import the dataset into <strong>pgAdmin</strong>.
   </li>
   <li>
-    Work on ETL process on <strong>Jupyter Notebook</strong> environment, and use the <strong>SQLAlchemy </strong>libray to assist the dataset importing process.
+    We used a <strong>Flask</strong> server to build the API function.
   </li>
   <li>
-    Implement a <strong>Flask</strong> server to be responsible for the API function.
+    From that point, we created our data visualizations. We used <strong>Leaflet</strong> to show the incidents in a map of Minneapolis with marker clusters displaying additional information. We found a new javasript library, <strong>amcharts javascript library</strong>, to generate interactive pie charts related to the subject's race, sex, and age. And we used <strong>Plotly</strong> to create a bar chart displaying the number of incidents.
   </li>
   <li>
-    Take advantage of <strong>amcharts javascript library</strong> to generate interactive graphs to illustrate insights.
-  </li>
-  <li>
-    <strong>Map, Pie Chart, and Bar Chart</strong> are the delivery tools.
+    Lastly, we used <strong>Bootstrap</strong> to format the page, adding a drop-down box that allows you to pull the data by year.
   </li>
 </ol>
 
