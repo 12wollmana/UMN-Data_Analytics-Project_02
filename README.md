@@ -8,6 +8,28 @@ This project looks at the use of police force within cases in Minneapolis.
 
 [Link to Project Proposal](https://docs.google.com/document/d/1S8f17_1JH-xNafa9AJuODPuJU724BTAQOyuVbggtQM4/)
 
+## Project Summary
+<ol>
+  <li>
+    Create a <strong>dashboard</strong> for the <strong>Police Use Force Dataset</strong>, retrived from Open Minneapolis, to show a big picture of the subjects' features, and the force types polices tend to implement.
+  </li>
+  <li>
+    Design database schema on <strong>QuickDBD</strong> then run SQL queries on <strong>pgAdmin</strong> to create tables.
+  </li>
+  <li>
+    Utilize <strong>PostgreSQL</strong> as the backbone to store the dataset.
+  </li>
+  <li>
+    Work on ETL process on <strong>Jupyter Notebook</strong> environment, and use the <strong>SQLAlchemy </strong>libray to assist the dataset importing process.
+  </li>
+  <li>
+    Take advantage of <strong>amcharts</strong> to generate interactive graphs to illustrate insights.
+  </li>
+  <li>
+    <strong>Map, Pie Chart, and Bar Chart</strong> are the delivery tools.
+  </li>
+</ol>
+
 ## How to Run
 
 ### Configuration Files
@@ -172,7 +194,7 @@ After finishing the <strong>How to Run section</strong>, the server should be ru
   <li>
     Use the fields in the Settings footer to change which data appears on the webpage. Click the Apply button to populate the webpage based on the Settings. It may take up to a minute to load the data.  The webpage should populate with visualizations similar to the below screenshot:
     <img src="screenshots/homepage-2.png" alt="Homepage with Charts">
-  <li>
+  </li>
 </ol>
 
 
