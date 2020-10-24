@@ -11,10 +11,10 @@ This project looks at the use of police force within cases in Minneapolis.
 ## Project Summary
 <ol>
   <li>
-    This project is a <strong>dashboard</strong> analyzing the Minneapolis' police use of force over the past 12 years. The <strong>Police Use Force Dataset</strong> is retrieved from [Link to opendataminneapolis](https://opendata.minneapolismn.gov/).
+    This project is a <strong>dashboard</strong> analyzing the Minneapolis' police use of force over the past 12 years. The <strong>Police Use Force Dataset</strong> is retrieved from opendataminneapolis
   </li>
   <li>
-    To being, we designed a database schema on <strong>QuickDBD</strong> and created SQL queries to load tables in <strong>pgAdmin</strong>, which is where we stored the dataset.
+    To begin, we designed a database schema on <strong>QuickDBD</strong> and created SQL queries to load tables in <strong>pgAdmin</strong>, which is where we stored the dataset.
   </li>
   <li>
     We used a <strong>Jupyter Notebook</strong> environment for the ETL process, and used the <strong>SQLAlchemy </strong>libray to import the dataset into <strong>pgAdmin</strong>.
