@@ -11,7 +11,7 @@ This project looks at the use of police force within cases in Minneapolis.
 ## Project Summary
 <ol>
   <li>
-    This project is a <strong>dashboard</strong> analyzing the Minneapolis Police Department's use of force over the past 12 years. The <strong>Police Use Force Dataset</strong> is retrieved from [Open Minneapolis](https://opendata.minneapolismn.gov/datasets/police-use-of-force).
+    This project is a <strong>dashboard</strong> analyzing the Minneapolis Police Department's use of force over the past 12 years. The <strong>Police Use Force Dataset</strong> is retrieved from Open Data Minneapolis.
   </li>
   <li>
     To begin, we designed a database schema on <strong>QuickDBD</strong> and created SQL queries to load tables in <strong>pgAdmin</strong>, which is where we stored the dataset.
