@@ -26,7 +26,7 @@ This project looks at the use of police force within cases in Minneapolis.
     From that point we were able to design our data visualizations. We used <strong>Leaflet</strong> to show the incidents in a map of Minneapolis with marker clusters displaying additional information. We found a new javasript library, <strong>amcharts javascript library</strong>, to generate interactive pie charts related to the subject's race, sex, and age. And we used <strong>Plotly</strong> to create a bar chart displaying the number of incidents.
   </li>
   <li>
-    Lastly, we used <strong>Bootstrap</strong> to format the page, adding a drop-down box that allows you to pull the data by year.
+    Lastly, we used <strong>Bootstrap</strong> to format the page and added a drop-down box that allows you to pull the data by year.
   </li>
 </ol>
 
