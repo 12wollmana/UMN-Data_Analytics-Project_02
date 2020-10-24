@@ -23,7 +23,10 @@ This project looks at the use of police force within cases in Minneapolis.
     Work on ETL process on <strong>Jupyter Notebook</strong> environment, and use the <strong>SQLAlchemy </strong>libray to assist the dataset importing process.
   </li>
   <li>
-    Take advantage of <strong>amcharts</strong> to generate interactive graphs to illustrate insights.
+    Implement a <strong>Flask</strong> server to be responsible for the API function.
+  </li>
+  <li>
+    Take advantage of <strong>amcharts javascript library</strong> to generate interactive graphs to illustrate insights.
   </li>
   <li>
     <strong>Map, Pie Chart, and Bar Chart</strong> are the delivery tools.
