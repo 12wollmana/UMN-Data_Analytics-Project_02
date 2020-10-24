@@ -11,6 +11,7 @@ let state = {
   map: {},
   year: "",
   caseMarkers: {},
+  barChart: {},
 };
 
 /**
@@ -31,6 +32,7 @@ const elements = {
   divChartColAge: d3.select(".col__chart-age"),
   colError: d3.select(".col__error"),
   divErrorMessage: d3.select(".alert-danger"),
+  divChartColBar: d3.select(".col__chart-bar"),
 };
 
 /**
@@ -190,6 +192,76 @@ async function updateCasesByYear(year) {
   state.caseMarkers = caseMarkers;
 
   am4core.ready(() => generateAmCharts(allCasesByYear));
+
+  generateBarChart(allCasesByYear);
+}
+
+/**
+ * Creates a bar chart over the provided cases.
+ * @param {any[]} cases
+ * The cases to chart.
+ */
+function generateBarChart(cases) {
+  const chartElement = elements.divChartBar;
+  const data = getForceCategoryData(cases);
+
+  const trace = {
+    x: data.forceCategories,
+    y: data.counts,
+    type: "bar",
+  };
+
+  const traces = [trace];
+
+  const layout = {
+    xaxis: { title: "Category" },
+    yaxis: { title: "Count" },
+  };
+
+  const config = {
+    responsive: true,
+  };
+
+  Plotly.newPlot(chartElement.node(), traces, layout, config);
+  Plotly.Plots.resize(chartElement.node());
+}
+
+/**
+ * Gets the force categories from the cases.
+ * @param {any[]} cases
+ * The cases to get the categories from.
+ */
+function getForceCategoryData(cases) {
+  forceCounts = {};
+
+  for (let caseData of cases) {
+    let currentCase = caseData["case"];
+
+    let force = currentCase["force"];
+    if (!force) break;
+
+    let category = force["forceCategory"];
+    if (!category) break;
+
+    if (forceCounts[category] > 0) {
+      forceCounts[category]++;
+    } else {
+      forceCounts[category] = 1;
+    }
+  }
+
+  let forceCategories = [];
+  let counts = [];
+
+  Object.entries(forceCounts).forEach(([category, count]) => {
+    forceCategories.push(category);
+    counts.push(count);
+  });
+
+  return {
+    forceCategories,
+    counts,
+  };
 }
 
 /**
